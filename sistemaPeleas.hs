@@ -92,6 +92,7 @@ main  = do
 
 -- Modificar un dato de un registro
 
+modificarFelicidad,modificarSanar,modificarLuchar,modificarTnJ :: Double -> Personaje -> Personaje
 
 modificarFelicidad act personaje = personaje { felicidad = act + (felicidad personaje) }
 
@@ -102,6 +103,7 @@ modificarLuchar act personaje = personaje { luchar = act + (luchar personaje) }
 modificarTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu personaje) }
 
 
+modificaStat :: String -> Double -> Personaje -> Personaje
 modificaStat stat val personaje
                         | stat == "Felicidad" = modificarFelicidad val personaje
                         | stat == "Sanar" = modificarSanar val personaje
@@ -114,8 +116,9 @@ modificaStat stat val personaje
 main  = do
         let kal = def {nombre="Kal"}
         putStrLn $ show kal -- Para mostrar el registro personaje meterlo dentro de un Show
-        let kal' = modificaStat "Felicidad" 2 kal -- Buscar la forma de modificar la misma variable sin que se forme un bucle infinito
-        return kal'
+        let kal' = modificaStat "Felicidad" 2 kal
+        let kal = kal'
+        return kal
 -}
 
 
