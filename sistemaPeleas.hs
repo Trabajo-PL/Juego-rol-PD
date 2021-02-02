@@ -10,6 +10,16 @@ import Data.Default
 
 --------------------------------------------------------------------------------------------------------------
 
+-------------------------------------------------ANOTACIONES--------------------------------------------------
+{-
+
+Orden de habilidades
+1 lucha
+2 sanar
+3 hablar
+4 felicidad
+
+-}
 
 -------------------------------------------------Recursos-----------------------------------------------------
 
@@ -56,6 +66,7 @@ aleatorio = getStdRandom (randomR (0,1))
 main = do
         let x = max 0 (5.0/6.0) -- Idea de ReLU por si un cálculo sale negativo 
         y <- aleatorio -- Así pasamos de IO Double a Double para tener soporte de comparadores
+        putStrLn $ show y
         return (x > y)
 -}
 
@@ -73,14 +84,13 @@ obtenerLuchar personaje = luchar personaje
 
 obtenerTnJ personaje = talkNoJutsu personaje
 
-
+-- Cambiar a case of
 obtenerStat :: String -> Personaje -> Double
 obtenerStat stat personaje
                         | stat == "Felicidad" = obtenerFelicidad personaje
                         | stat == "Sanar" = obtenerSanar personaje
                         | stat == "Luchar" = obtenerLuchar personaje
                         | otherwise = obtenerTnJ personaje
-
 
 {-
 main  = do
@@ -92,7 +102,7 @@ main  = do
 
 -- Modificar un dato de un registro
 
-
+modificarFelicidad, modificarLuchar, modificarSanar, modificarTnJ:: Double -> Personaje -> Personaje
 modificarFelicidad act personaje = personaje { felicidad = act + (felicidad personaje) }
 
 modificarSanar act personaje = personaje { sanar = act + (sanar personaje) }
@@ -101,7 +111,8 @@ modificarLuchar act personaje = personaje { luchar = act + (luchar personaje) }
 
 modificarTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu personaje) }
 
-
+-- Cambiar a case of
+modificaStat:: String -> Double -> Personaje -> Personaje
 modificaStat stat val personaje
                         | stat == "Felicidad" = modificarFelicidad val personaje
                         | stat == "Sanar" = modificarSanar val personaje
@@ -115,7 +126,9 @@ main  = do
         let kal = def {nombre="Kal"}
         putStrLn $ show kal -- Para mostrar el registro personaje meterlo dentro de un Show
         let kal' = modificaStat "Felicidad" 2 kal -- Buscar la forma de modificar la misma variable sin que se forme un bucle infinito
-        return kal'
+        let kal = kal'
+        putStrLn $ show kal'
+        return kal
 -}
 
 
