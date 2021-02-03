@@ -1,5 +1,8 @@
-1 #1 Manolito es un chaval que vive en Piedralar, su padre médico le enseña desde pequeño su profesión, vive además con su madre y su hermano Helena y Juan. Tiene una muy buena relación con su hermano, quien siempre le alegra puesto que es un sad boy. Su padre está en contra de la guerra, pues quita vidas y él piensa que las vidas no deben desperdiciarse, pero Manolito siente atracción por el arte de la lanza. Hoy no hay pacientes, ¿qué prefieres hacer? 
-2   - Jugar con Juan % 1 4 & 8 
-3   - Ayudar a tu padre % 1 2 & 8 
-4   - Practicar con la lanza % & 5 6
-
+1#1 Manolito es un chaval que vive en Piedralar, su padre médico le enseña desde pequeño su profesión, vive además con su madre y su hermano Helena y Juan. Tiene una muy buena relación con su hermano, quien siempre le alegra puesto que es un sad boy. Su padre está en contra de la guerra, pues quita vidas y él piensa que las vidas no deben desperdiciarse, pero Manolito siente atracción por el arte de la lanza. Hoy no hay pacientes, ¿qué prefieres hacer? 
+    - Jugar con Juan % 2 1 4 &  1
+    - Ayudar a tu padre % 3 1 2 & 1
+    - Practicar con la lanza % 2 0 0 & 1
+2#1.1 Manolito se fue cerca de los cultivos para poder prácticar lejos de la vista de su padre. Pero entonces llegó uno de los niños mayores que se río y empujó. ¿Qúe hace manolito?
+    - Levantarse y pegarle con la lanza.
+    - Intentar hablar con él e intimidarlo.
+    - Huir rápido para no que no le haga daño.
