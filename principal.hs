@@ -33,7 +33,7 @@ compruebaFichero f =
    if length f > 0 then do
     existe <- doesFileExist f
     if existe then
-      return ""      
+      return ""   
     else
       putStrLn("El fichero " ++ f ++ " no existe")
    else do
