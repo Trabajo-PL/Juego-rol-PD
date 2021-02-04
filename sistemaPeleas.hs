@@ -102,7 +102,8 @@ main  = do
 
 -- Modificar un dato de un registro
 
-modificarFelicidad, modificarLuchar, modificarSanar, modificarTnJ:: Double -> Personaje -> Personaje
+modificarFelicidad,modificarSanar,modificarLuchar,modificarTnJ :: Double -> Personaje -> Personaje
+
 modificarFelicidad act personaje = personaje { felicidad = act + (felicidad personaje) }
 
 modificarSanar act personaje = personaje { sanar = act + (sanar personaje) }
@@ -111,8 +112,8 @@ modificarLuchar act personaje = personaje { luchar = act + (luchar personaje) }
 
 modificarTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu personaje) }
 
--- Cambiar a case of
-modificaStat:: String -> Double -> Personaje -> Personaje
+
+modificaStat :: String -> Double -> Personaje -> Personaje
 modificaStat stat val personaje
                         | stat == "Felicidad" = modificarFelicidad val personaje
                         | stat == "Sanar" = modificarSanar val personaje
@@ -128,6 +129,8 @@ main  = do
         let kal' = modificaStat "Felicidad" 2 kal -- Buscar la forma de modificar la misma variable sin que se forme un bucle infinito
         let kal = kal'
         putStrLn $ show kal'
+        let kal' = modificaStat "Felicidad" 2 kal
+        let kal = kal'
         return kal
 -}
 
