@@ -27,7 +27,7 @@ data Personaje = Pers { nombre :: String, felicidad :: Double, talkNoJutsu :: Do
 
 instance Default Personaje where
         def = Pers { nombre = "nombreDefecto" , felicidad = def , talkNoJutsu = 1.0 , 
-            sanar = 1.0 , luchar = def, vida = 3.0}
+            sanar = 1.0 , luchar = 1.0, vida = 3.0}
 
 
 -- Para acceder al atributo concreto de un campo del registro, primero se nombra el campo y después el regis-
