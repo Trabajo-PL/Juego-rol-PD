@@ -8,13 +8,12 @@ import Data.Array
 import System.Random
 import Data.Default
 import Data.List
-import System.IO.Unsafe
 import Datos
 
 
 -- ---------******** TIPOS ********---------- --
 -- El primer String será Integer y representará la línea del texto en la que nos encontramos "texto principal de la historia"
-type World = (String, Integer, Datos.OpcionesH, Personaje, Integer, Matriz Datos.Opciones, [Datos.HistoriaCSV])
+type World = (Integer, Integer, Datos.OpcionesH, Personaje, Integer, Matriz Datos.Opciones, [Datos.HistoriaCSV])
   -- Texto de la historia ; Fila para el aumento ; Las opciones de la historia ; El prota --
 -- añadir 2 tipos relacionados con tooooodo el tema de los almacenes de variables y datos en el mundo inicial, y vamos sacando de ahí, así quitamos problemas futuros.
 data Personaje = Pers { nombre :: String, felicidad :: Double, talkNoJutsu :: Double, 
@@ -37,7 +36,7 @@ mundoInicial = do
       historiaCSV' <- historiaCSV
       datosAumento' <- datosAumento 
       return (texto, filaAumento, opcionesHistoria, prota, tipoActual, datosAumento', historiaCSV')
-      where texto = "Prueba inicio"
+      where texto = 1
             filaAumento = 0
             opcionesHistoria = ("","","")
             prota = kal
@@ -50,7 +49,7 @@ evento:: Event -> World -> World
 evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, datosAumento', historiaCSV')  = case tipoActual of
           0 -> case k of
                 "1" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', historiaCSV')
-                  where (texto0, opcionesHistoria0, _) = ("1",("Jugar con Juan","Ayudar a tu padre","Practicar con la lanza"),0)
+                  where (texto0, opcionesHistoria0, _) = (1,("Jugar con Juan","Ayudar a tu padre","Practicar con la lanza"),0)
                 _ -> mundo
                   
           1 -> case k of
@@ -83,9 +82,9 @@ funcionW filaA columna historiaCSV' datosAumento' = (texto, siguienteFilaHistori
         
 sacoTexto:: Integer -> Integer -> [Datos.HistoriaCSV] -> Datos.HistoriaCSV
 sacoTexto fila tipoA historiaCSV' = case tipoA of
-              0 -> ("texto NADA", ("ataque", "defensa", "insulto"),1)
+              0 -> (0, ("ataque", "defensa", "insulto"),1)
               1 -> historiaCSV'!!(fromIntegral fila)--historiaCSV!!(fromIntegral fila)
-              2 -> ("texto pelea", ("ataque", "defensa", "insulto"),1)
+              2 -> (0, ("ataque", "defensa", "insulto"),1)
               
 
 -- DIBUJO
@@ -93,9 +92,9 @@ sacoTexto fila tipoA historiaCSV' = case tipoA of
 dibujo:: World -> Picture
 dibujo mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', historiaCSV') = 
   case tipoA of
-    0 -> lettering (pack texto) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
-    1 -> lettering (pack texto) <> personaje'
-    2 -> lettering (pack texto) <> personaje' <> colored (green) (solidCircle 1)  -- <> texto3
+    0 -> lettering (pack (show texto)) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
+    1 -> lettering (pack (show texto)) <> personaje'
+    2 -> lettering (pack (show texto)) <> personaje' <> colored (green) (solidCircle 1)  -- <> texto3
     where personaje' = translated (0) (3) (scaled 0.5 0.5 texto2)
           texto2 = (lettering (pack( show (sFila, tipoA))))
           texto3 = translated (0) (4) (lettering (pack( show (historiaCSV'!!0))))
