@@ -80,7 +80,7 @@ seleccionaElemento f c m = m ! (f,c)
 ------ ---------- ----------- ------------ ---------
 type Enemigos = [String]
 type OpcionesH = (String, String, String)
-type HistoriaCSV = (String, OpcionesH, Integer)
+type HistoriaCSV = (Integer, OpcionesH, Integer)
 
 readerHistory:: IO [HistoriaCSV]
 readerHistory = do
@@ -91,7 +91,7 @@ readerHistory = do
                 _ -> []
     let cabecera = head filas
     let datos = tail filas
-    let historyCSV = [(texto,(a,b,c), read siguienteF::Integer) | fil <- datos,let texto = fil!!0, let siguienteF = fil!!4, let a = fil!!1, let b = fil!!2, let c = fil!!3]
+    let historyCSV = [(read texto:: Integer,(a,b,c), read siguienteF::Integer) | fil <- datos,let texto = fil!!0, let siguienteF = fil!!4, let a = fil!!1, let b = fil!!2, let c = fil!!3]
     return (historyCSV)
 
 
