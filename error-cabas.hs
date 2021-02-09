@@ -8,11 +8,12 @@ import Data.Array
 import System.Random
 import Data.Default
 import Data.List
-import Datos
 import System.IO.Unsafe
+import Datos
 
 
 -- ---------******** TIPOS ********---------- --
+-- El primer String será Integer y representará la línea del texto en la que nos encontramos "texto principal de la historia"
 type World = (String, Integer, Datos.OpcionesH, Personaje, Integer, Matriz Datos.Opciones, [Datos.HistoriaCSV])
   -- Texto de la historia ; Fila para el aumento ; Las opciones de la historia ; El prota --
 -- añadir 2 tipos relacionados con tooooodo el tema de los almacenes de variables y datos en el mundo inicial, y vamos sacando de ahí, así quitamos problemas futuros.
@@ -56,9 +57,12 @@ evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, 
                 "1" -> (funcionW filaAumento 1 historiaCSV' datosAumento')
                 "2" -> (funcionW filaAumento 2 historiaCSV' datosAumento')
                 "3" -> (funcionW filaAumento 3 historiaCSV' datosAumento') 
-                _ -> mundo
+                _   -> mundo
           2 -> case k of
                 "1" -> mundo
+                "2" -> mundo
+                "3" -> mundo
+                "4" -> mundo
                 _ -> mundo
           _ -> mundo
 evento _ mundo = mundo 
@@ -95,3 +99,10 @@ dibujo mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', historiaC
     where personaje' = translated (0) (3) (scaled 0.5 0.5 texto2)
           texto2 = (lettering (pack( show (sFila, tipoA))))
           texto3 = translated (0) (4) (lettering (pack( show (historiaCSV'!!0))))
+
+{-
+pila -> enemig1, enemigo2, enemigo3
+head pila -> enemigo3 
+elimina pila -> enemig1, enemigo2
+actualizas enemigo3 -> enemigo3'
+añade pila enemigo' -> enemig1, enemigo2, enemigo3'-}
