@@ -86,10 +86,10 @@ evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, 
                 "3" -> (funcionW filaAumento 3 hCSV' datosAumento') 
                 _   -> mundo
           2 -> case k of
-                "1" -> mundo
-                "2" -> mundo
-                "3" -> mundo
-                "4" -> mundo
+                "1" -> getCombate mundo 1
+                "2" -> getCombate mundo 2
+                "3" -> getCombate mundo 3
+                "4" -> getCombate mundo 4
                 _ -> mundo
           _ -> mundo
 evento _ mundo = mundo 
