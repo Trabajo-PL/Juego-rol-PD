@@ -1,15 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 import CodeWorld
-import Data.Char
-import Text.Printf
 import Data.Text (pack)
 import System.IO
 import Data.Array
-import System.Random
 import Data.Default
 import Data.List
-import Datos
 import I1M.Pila -- Import añadido para la pila de enemigos
+-- Modulos nuestros:
+import Datos
 import SistemaPeleas as SP
 
 
@@ -85,9 +83,9 @@ evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, 
                 _ -> mundo
                   
           1 -> case k of
-                "1" -> (funcionW filaAumento 1 mundo)
-                "2" -> (funcionW filaAumento 2 mundo)
-                "3" -> (funcionW filaAumento 3 mundo) 
+                "1" -> (updateWorld filaAumento 1 mundo)
+                "2" -> (updateWorld filaAumento 2 mundo)
+                "3" -> (updateWorld filaAumento 3 mundo) 
                 _   -> mundo
           2 -> case k of
                 "1" -> (getCombate mundo 1)
@@ -109,10 +107,11 @@ datosAumento =lectorFicheroAumento
 
 -- FICHEROS
 
-funcionW:: Integer -> Int  -> World -> World
-funcionW filaA columna mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = (texto, siguienteFilaHistoria, opcionesH, kal, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC)
+updateWorld:: Integer -> Int  -> World -> World
+updateWorld filaA columna mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = (texto, siguienteFilaHistoria, opcionesH, personaje', tipoA, datosAumento', hCSV',(py,en), rands,estaEnC)
   where   (tipoA, siguienteFilaHistoria, valor, habilidad) = seleccionaElemento (fromIntegral filaA) columna datosAumento'
           (texto,opcionesH,_) = sacoTexto (siguienteFilaHistoria - 1) tipoA hCSV'
+          personaje' = SP.modificaStat (fromIntegral habilidad) (fromIntegral valor) personaje
 
         
 sacoTexto:: Integer -> Integer -> [Datos.HistoriaCSV] -> Datos.HistoriaCSV
@@ -120,7 +119,6 @@ sacoTexto fila tipoA hCSV' = case tipoA of
               0 -> (0, ("ataque", "defensa", "insulto"),1)
               1 -> hCSV'!!(fromIntegral fila)--historiaCSV!!(fromIntegral fila)
               2 -> hCSV'!!(fromIntegral fila)
-              
 
 -- DIBUJO
 
@@ -128,11 +126,11 @@ dibujo:: World -> Picture
 dibujo mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = 
   case tipoA of
     0 -> lettering (pack (show texto)) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
-    1 -> lettering (pack (show texto)) <> personaje' <> colored (blue) (solidCircle 1)
+    1 -> lettering (pack (show (personaje, texto))) <> personaje' <> colored (blue) (solidCircle 1)
     2 -> lettering (pack "Estamos en una PELEA") <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
-    3 -> lettering (pack "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
+    3 -> lettering (pack (show (personaje, "HAS PERDIDO"))) <> colored (yellow) (solidCircle 1)
     where personaje' = translated (0) (3) (scaled 0.5 0.5 texto2)
-          texto2 = (lettering (pack( show (sFila, tipoA, estaEnC))))
+          texto2 = (lettering (pack( show (sFila, tipoA, estaEnC, texto))))
           texto3 = translated (0) (4) (lettering (pack( "1 - Pierde Vida"++"2- Algo"++"3 insulto a alguien"++"me la pela")))
           texto4 = scaled 0.5 0.5 $ translated (0) (5) (lettering (pack( show (py, en))))
 
