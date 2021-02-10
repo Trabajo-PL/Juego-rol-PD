@@ -6,6 +6,7 @@ module SistemaPeleas
     finalCombate,
     aleatorio,
     accionAleatoria,
+    modificaStat,
     Personaje(Pers)
 ) where
 
@@ -143,6 +144,7 @@ modificaStat stat val personaje = case stat of
                         3 -> modificarTnJ val personaje
                         4 -> modificarFelicidad val personaje
                         5 -> modificarVida val personaje
+                        _ -> personaje
 
 
 -- De nuevo lo siguiente es una prueba para probar un poco el testeo y ver cómo funcionan las cosas
