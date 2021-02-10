@@ -22,7 +22,7 @@ type ValorYHabilidad = (Integer, Integer)
 
 lectorFicheroAumento:: IO (Matriz Opciones)
 lectorFicheroAumento = do
-    let entrada = "E:\\Universidad\\tercero\\PD\\pruebas-trabajo\\aumentos.csv"
+    let entrada = "aumentos.csv"
     contenido <- parseCSVFromFile entrada  -- cargar el contenido
     let filas = case contenido of
                 Right filas -> filas
@@ -84,7 +84,7 @@ type HistoriaCSV = (Integer, OpcionesH, Integer)
 
 readerHistory:: IO [HistoriaCSV]
 readerHistory = do
-    let entrada = "E:\\Universidad\\tercero\\PD\\pruebas-trabajo\\historia.csv"
+    let entrada = "historia.csv"
     contenido <- parseCSVFromFile entrada
     let filas = case contenido of
                 Right filas -> filas
