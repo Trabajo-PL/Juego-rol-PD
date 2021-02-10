@@ -5,7 +5,8 @@ module SistemaPeleas
     ejecutaAccion,
     finalCombate,
     aleatorio,
-    accionAleatoria
+    accionAleatoria,
+    Personaje(Pers)
 ) where
 
 
