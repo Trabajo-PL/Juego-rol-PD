@@ -44,9 +44,9 @@ siguienteTipo el
     | el >= 0 = div el 1000
 
 filaHistoria:: Integer -> Integer
-filaHistoria el 
-    | el < 0 = div (-1*aux) 100
-    | el >= 0 = div aux 100
+filaHistoria el = div aux 100
+    -- | el < 0 = div (-1*aux) 100
+    -- | el >= 0 = div aux 100
     where   aux     = if el < 0 then mod (-1*el) 1000 else mod el 1000
     -- | otherwise = error "Por ahora error, esto significa que vamos pegaaaaarnos"
 
