@@ -131,7 +131,8 @@ rightLegE = translated (3.7) (-7) (rotated (0.785398) (solidRectangle(4) (0.4)))
 
 
 playerStats :: (String, Double,Double,Double,Double,Double) -> Picture
-playerStats (_,l,f,tnj,s,v) = translated (-8.5) (7) (lettering(pack("Ataque: "++show(l))))
+playerStats (n,l,f,tnj,s,v) = translated (-8.5) (8) (lettering(pack(show(n))))
+                 & translated (-8.5) (7) (lettering(pack("Ataque: "++show(l))))
                  & translated (-8.5) (6) (lettering(pack("Felicidad: "++show(f))))
                  & translated (-8.5) (5) (lettering(pack("Intimidar: "++show(tnj))))
                  & translated (-8.5) (4) (lettering(pack("Sanar: "++show(s))))
@@ -140,7 +141,8 @@ playerStats (_,l,f,tnj,s,v) = translated (-8.5) (7) (lettering(pack("Ataque: "++
 
 
 enemStats :: (String, Double,Double,Double,Double,Double) -> Picture
-enemStats (_,l,f,tnj,s,v) = translated (8.5) (7) (lettering(pack("Ataque: "++show(l))))
+enemStats (n,l,f,tnj,s,v) = translated (8.5) (8) (lettering(pack(show(n))))
+                 & translated (8.5) (7) (lettering(pack("Ataque: "++show(l))))
                  & translated (8.5) (6) (lettering(pack("Felicidad: "++show(f))))
                  & translated (8.5) (5) (lettering(pack("Intimidar: "++show(tnj))))
                  & translated (8.5) (4) (lettering(pack("Sanar: "++show(s))))
