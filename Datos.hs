@@ -3,6 +3,7 @@ module Datos
     lectorFicheroAumento,
     seleccionaElemento,
     readerHistory,
+    readerText,
     HistoriaCSV,
     OpcionesH,
     Opciones
@@ -95,3 +96,9 @@ readerHistory = do
     return (historyCSV)
 
 
+readerText:: IO [String]
+readerText = do
+    let entrada = "historiaPrincipal.txt"
+    contenido <- readFile entrada
+    let lineas = [ l | l <- (lines contenido), length l > 1]
+    return (lineas)
