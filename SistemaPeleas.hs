@@ -7,6 +7,7 @@ module SistemaPeleas
     aleatorio,
     accionAleatoria,
     modificaStat,
+    statsCaracter,
     Personaje(Pers)
 ) where
 
@@ -296,5 +297,12 @@ main = do
         let (kal',nP') = ejecutaAccion kal 1 nP 1 rand
         putStrLn $ show (kal',nP')
 ---}
-
+statsCaracter:: Personaje -> (String, Double, Double, Double, Double, Double)
+statsCaracter principalC = (name, figth, heal, talk, happy, health)
+        where   name = (nombre principalC)
+                figth = (luchar principalC)
+                heal = (sanar principalC)
+                talk = (talkNoJutsu principalC)
+                happy = (felicidad principalC)
+                health = (vida principalC)
 --------------------------------------------------------------------------------------------------------------
