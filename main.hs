@@ -121,7 +121,8 @@ drawWorld world =
         where   statsC = SP.statsCaracter (principalC world)
                 optionsH' = (optiosH world)
                 textH' = (textHistory world)!!(fromIntegral (rowH world)-1)
-    2 -> combatDraw (SP.statsCaracter kal) (SP.statsCaracter ninoPueblo)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
+    2 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
+        where   (py, en) = (battle world)
     3 -> {-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
     4 -> {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
 
