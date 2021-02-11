@@ -14,7 +14,7 @@ import SistemaPeleas as SP
 -- ---------******** TIPOS ********---------- --
 -- El primer String será Integer y representará la línea del texto en la que nos encontramos "texto principal de la historia"
 type World = (Integer, Integer, Datos.OpcionesH, SP.Personaje, Integer, Matriz Datos.Opciones, 
-              [Datos.HistoriaCSV], (SP.Personaje,SP.Personaje), [Double], Integer)
+              [Datos.HistoriaCSV], (SP.Personaje,SP.Personaje), [Double], Integer, [String])
 
 
   -- Texto de la historia ; Fila para el aumento ; Las opciones de la historia ; El prota --
@@ -60,8 +60,9 @@ initialWorld = do
       hCSV' <- historiaCSV
       datosAumento' <- datosAumento
       as <-  SP.aleatorio
+      text <- Datos.readerText
       let rands = as
-      return (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0)
+      return (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0, text)
       where py = kal
             en = kal
 
@@ -70,9 +71,9 @@ kal = SP.Pers "Kal" (-1) 1 2 1 10
 
   -- Evento
 evento:: Event -> World -> World
-evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, datosAumento', hCSV',(py,en), rands,estaEnC)  = case tipoActual of
+evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, datosAumento', hCSV',(py,en), rands,estaEnC, text)  = case tipoActual of
           0 -> case k of
-                "1" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC)
+                "1" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC, text)
                   where (texto0, opcionesHistoria0, _) = hCSV'!!0
                 _ -> mundo
                   
@@ -88,17 +89,17 @@ evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, 
                 "4" -> (getCombate mundo 4)
                 _ -> mundo
           3 -> case k of
-                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0) -- Volver a la pantalla de inicio
+                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0, text) -- Volver a la pantalla de inicio
                     where py = kal
                           en = kal
-                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC) -- Volver a empezar otra partida
+                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC, text) -- Volver a empezar otra partida
                     where (texto0, opcionesHistoria0, _) = hCSV'!!0
                 _ -> mundo
           4 -> case k of
-                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0) -- Volver a la pantalla de inicio
+                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0, text) -- Volver a la pantalla de inicio
                     where py = kal
                           en = kal
-                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC) -- Volver a empezar otra partida
+                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC, text) -- Volver a empezar otra partida
                     where (texto0, opcionesHistoria0, _) = hCSV'!!0
                 _ -> mundo
           _ -> mundo
@@ -113,7 +114,7 @@ datosAumento =lectorFicheroAumento
 -- FICHEROS
 
 updateWorld:: Integer -> Int  -> World -> World
-updateWorld filaA columna mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = (texto, siguienteFilaHistoria, opcionesH, personaje', tipoA, datosAumento', hCSV',(py,en), rands,estaEnC)
+updateWorld filaA columna mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC, text) = (texto, siguienteFilaHistoria, opcionesH, personaje', tipoA, datosAumento', hCSV',(py,en), rands,estaEnC, text)
   where   (tipoA, siguienteFilaHistoria, valor, habilidad) = seleccionaElemento (fromIntegral filaA) columna datosAumento'
           (texto,opcionesH,_) = sacoTexto (siguienteFilaHistoria - 1) tipoA hCSV'
           personaje' = SP.modificaStat (fromIntegral habilidad) (fromIntegral valor) personaje
@@ -128,13 +129,13 @@ sacoTexto fila tipoA hCSV' = case tipoA of
 -- DIBUJO
 
 drawWorld:: World -> Picture
-drawWorld mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = 
+drawWorld mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC, text) = 
   case tipoA of
-    0 -> lettering (pack (show texto)) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
-    1 -> lettering (pack (show (personaje, texto))) <> personaje' <> colored (blue) (solidCircle 1)
-    2 -> lettering (pack "Estamos en una PELEA") <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
-    3 -> lettering (pack (show (personaje, "HAS PERDIDO"))) <> colored (yellow) (solidCircle 1)
-    4 -> lettering (pack (show (personaje, "HAS GANADO"))) <> colored (pink) (solidCircle 1)
+    0 -> {- startDraw -} lettering (pack (show texto)) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
+    1 -> {-textDraw  -} lettering (pack (show (personaje, texto))) <> personaje' <> colored (blue) (solidCircle 1)
+    2 -> {-combatDraw -} lettering (pack "Estamos en una PELEA") <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
+    3 -> {-goDraw -} lettering (pack (show (personaje, "HAS PERDIDO"))) <> colored (yellow) (solidCircle 1)
+    4 -> {-winDraw -} lettering (pack (show (personaje, "HAS GANADO"))) <> colored (pink) (solidCircle 1)
     where personaje' = translated (0) (3) (scaled 0.5 0.5 texto2)
           texto2 = (lettering (pack( show (sFila, tipoA, estaEnC, texto))))
           texto3 = translated (0) (4) (lettering (pack( "1 - Pierde Vida"++"2- Algo"++"3 insulto a alguien"++"me la pela")))
@@ -154,9 +155,9 @@ Modificaciones que le he hecho al mundo:
 -}
 
 getCombate :: World -> Integer -> World
-getCombate mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) accion =
+getCombate mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC, text) accion =
         case estaEnC of
-          0 -> (texto, sFila, opciones, personaje, tipoA , datosAumento', hCSV',combt', rands',estaEnC')
+          0 -> (texto, sFila, opciones, personaje, tipoA , datosAumento', hCSV',combt', rands',estaEnC', text)
           1 -> getCombateAux mundo py' en' rands'
           where combt' = SP.ejecutaAccion personaje accion (selEnem (ceiling (fromIntegral (texto `div` 3))) pilaEnemys) ae (head rands)
                 ae = SP.accionAleatoria (head (tail rands))
@@ -166,10 +167,10 @@ getCombate mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV'
 
 
 getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
-getCombateAux mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) player enemy rAct
-          | finComb == 1 = (texto,sFila, opciones, personaje, 1, datosAumento', hCSV', (personaje,enemy), rAct, 0)
-          | finComb == 2 = (texto,sFila, opciones, personaje, 2, datosAumento', hCSV', (player,enemy), rAct, 1)
-          | finComb == 3 = (texto,sFila, opciones, personaje, 3, datosAumento', hCSV', (player,enemy), rAct, 0)
+getCombateAux mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC, text) player enemy rAct
+          | finComb == 1 = (texto,sFila, opciones, personaje, 1, datosAumento', hCSV', (personaje,enemy), rAct, 0, text)
+          | finComb == 2 = (texto,sFila, opciones, personaje, 2, datosAumento', hCSV', (player,enemy), rAct, 1, text)
+          | finComb == 3 = (texto,sFila, opciones, personaje, 3, datosAumento', hCSV', (player,enemy), rAct, 0, text)
             where (finComb,_) = SP.finalCombate player enemy
 
 
