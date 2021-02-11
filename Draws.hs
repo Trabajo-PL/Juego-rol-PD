@@ -104,11 +104,11 @@ player  = headP
 
 -- Draw player
 headP = translated (-5) (0) (solidCircle(1.2))
-leftArmP = translated (-3.7) (-2.4) (rotated (135) (solidRectangle(4) (0.4))) 
-rightArmP = translated (-6.3) (-2.4) (rotated (45) (solidRectangle(4) (0.4)))
-bodyP = translated (-5) (-3.4) (rotated (90) (solidRectangle(5) (0.4)))
-leftLegP = translated (-3.7) (-7) (rotated (135) (solidRectangle(4) (0.4))) 
-rightLegP = translated (-6.3) (-7) (rotated (45) (solidRectangle(4) (0.4)))
+leftArmP = translated (-3.7) (-2.4) (rotated (2.35619) (solidRectangle(4) (0.4))) 
+rightArmP = translated (-6.3) (-2.4) (rotated (0.785398) (solidRectangle(4) (0.4)))
+bodyP = translated (-5) (-3.4) (rotated (1.5708) (solidRectangle(5) (0.4)))
+leftLegP = translated (-3.7) (-7) (rotated (2.35619) (solidRectangle(4) (0.4))) 
+rightLegP = translated (-6.3) (-7) (rotated (0.785398) (solidRectangle(4) (0.4)))
 
 
 enemy :: Picture
@@ -122,11 +122,11 @@ enemy = headE
 
 -- Draw enemy
 headE = translated (5) (0) (solidCircle(1.2))
-leftArmE = translated (6.3) (-2.4) (rotated (135) (solidRectangle(4) (0.4))) 
-rightArmE = translated (3.7) (-2.4) (rotated (45) (solidRectangle(4) (0.4)))
-bodyE = translated (5) (-3.4) (rotated (90) (solidRectangle(5) (0.4)))
-leftLegE = translated (6.3) (-7) (rotated (135) (solidRectangle(4) (0.4))) 
-rightLegE = translated (3.7) (-7) (rotated (45) (solidRectangle(4) (0.4)))
+leftArmE = translated (6.3) (-2.4) (rotated (2.35619) (solidRectangle(4) (0.4))) 
+rightArmE = translated (3.7) (-2.4) (rotated (0.785398) (solidRectangle(4) (0.4)))
+bodyE = translated (5) (-3.4) (rotated (1.5708) (solidRectangle(5) (0.4)))
+leftLegE = translated (6.3) (-7) (rotated (2.35619) (solidRectangle(4) (0.4))) 
+rightLegE = translated (3.7) (-7) (rotated (0.785398) (solidRectangle(4) (0.4)))
 
 
 
