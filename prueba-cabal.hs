@@ -51,24 +51,18 @@ type Matriz a = Array (Int,Int) Datos.Opciones
 -- EL MAIN
 
 main = do
-  mundoInicial' <- mundoInicial
-  activityOf mundoInicial' evento dibujo
+  initialWorld' <- initialWorld
+  activityOf initialWorld' evento drawWorld
 
   -- Mundo inicial -> Inicio del juego
-mundoInicial:: IO World
-mundoInicial = do
+initialWorld:: IO World
+initialWorld = do
       hCSV' <- historiaCSV
       datosAumento' <- datosAumento
       as <-  SP.aleatorio
-      let rands = take 500 as
-      return (texto, filaAumento, opcionesHistoria, prota, tipoActual, datosAumento', hCSV', (py,en), rands ,estaEnC)
-      where texto = 1
-            filaAumento = 0
-            opcionesHistoria = ("","","")
-            prota = kal
-            tipoActual = 0
-            estaEnC = 0
-            py = kal
+      let rands = as
+      return (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0)
+      where py = kal
             en = kal
 
 kal:: SP.Personaje
@@ -79,7 +73,7 @@ evento:: Event -> World -> World
 evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, datosAumento', hCSV',(py,en), rands,estaEnC)  = case tipoActual of
           0 -> case k of
                 "1" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC)
-                  where (texto0, opcionesHistoria0, _) = (1,("Jugar con Juan","Ayudar a tu padre","Practicar con la lanza"),0)
+                  where (texto0, opcionesHistoria0, _) = hCSV'!!0
                 _ -> mundo
                   
           1 -> case k of
@@ -94,7 +88,18 @@ evento (KeyPress k) mundo@(texto, filaAumento, opciones, personaje, tipoActual, 
                 "4" -> (getCombate mundo 4)
                 _ -> mundo
           3 -> case k of
-                "1" -> mundo
+                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0) -- Volver a la pantalla de inicio
+                    where py = kal
+                          en = kal
+                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC) -- Volver a empezar otra partida
+                    where (texto0, opcionesHistoria0, _) = hCSV'!!0
+                _ -> mundo
+          4 -> case k of
+                "Enter" -> (1, 0, ("","",""), kal, 0, datosAumento', hCSV', (py,en), rands ,0) -- Volver a la pantalla de inicio
+                    where py = kal
+                          en = kal
+                "R" -> (texto0, 1, opcionesHistoria0, kal, 1, datosAumento', hCSV',(py,en), rands,estaEnC) -- Volver a empezar otra partida
+                    where (texto0, opcionesHistoria0, _) = hCSV'!!0
                 _ -> mundo
           _ -> mundo
 evento _ mundo = mundo 
@@ -122,13 +127,14 @@ sacoTexto fila tipoA hCSV' = case tipoA of
 
 -- DIBUJO
 
-dibujo:: World -> Picture
-dibujo mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = 
+drawWorld:: World -> Picture
+drawWorld mundo@(texto, sFila, opciones, personaje, tipoA, datosAumento', hCSV',(py,en), rands,estaEnC) = 
   case tipoA of
     0 -> lettering (pack (show texto)) <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
     1 -> lettering (pack (show (personaje, texto))) <> personaje' <> colored (blue) (solidCircle 1)
     2 -> lettering (pack "Estamos en una PELEA") <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
     3 -> lettering (pack (show (personaje, "HAS PERDIDO"))) <> colored (yellow) (solidCircle 1)
+    4 -> lettering (pack (show (personaje, "HAS GANADO"))) <> colored (pink) (solidCircle 1)
     where personaje' = translated (0) (3) (scaled 0.5 0.5 texto2)
           texto2 = (lettering (pack( show (sFila, tipoA, estaEnC, texto))))
           texto3 = translated (0) (4) (lettering (pack( "1 - Pierde Vida"++"2- Algo"++"3 insulto a alguien"++"me la pela")))
