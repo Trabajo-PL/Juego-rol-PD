@@ -3,33 +3,33 @@ combatDraw py en = player & enemy & actions & ground & (playerStats py) & (enemS
 
 
 ground :: Picture
-ground = colored (translated(solidRectangle(150,1.5),0,-9.0),green) 
-         & colored (translated(solidRectangle(150, 100), 0, -58.3), brown)
+ground = colored (translated (0) (-9) (solidRectangle(150,1.5))) 
+         & colored (brown) (translated (0) (-58.3) (solidRectangle(150, 100)))
 
 
 attackText :: Picture
-attackText = translated(lettering("1.-Atacar"),-8,-16)
-             & colored (translated(solidRectangle(7,1.5),-8,-16), red)
+attackText = translated (-8) (-16) (lettering("1.-Atacar"))
+             & colored (red) (translated (-8) (-16) (solidRectangle(7,1.5)))
 
 
 defText :: Picture
-defText = translated(lettering("2.-Defenderse"), 8,-16)
-          & colored (translated(solidRectangle(7,1.5),8,-16), orange)
+defText = translated (8) (-16) (lettering("2.-Defenderse"))
+          & colored (orange) (translated (8) (-16) (solidRectangle(7,1.5)))
 
 
 tnjText :: Picture
-tnjText = translated(lettering("3.-Bajar moral"),-8,-19)
-          & colored (translated(solidRectangle(7,1.5),-8,-19), purple)
+tnjText = translated (8) (-19) (lettering("3.-Bajar moral"))
+          & colored (purple) (translated (8) (-19) (solidRectangle(7,1.5)))
 
 
 curarseText :: Picture
-curarseText = translated(lettering("4.-Curarse"),8,-19)
-              & colored (translated(solidRectangle(7,1.5),8,-19), pink)
+curarseText = translated (8) (-19) (lettering("4.-Curarse"))
+              & colored (pink) (translated (8) (-19) (solidRectangle(7,1.5)))
 
 
 actions :: Picture
 actions= attackText & defText & tnjText & curarseText 
-         & colored (translated(rectangle(25,6),0,-17.5), black)
+         & translated (0) (-17.5) (rectangle(25,6))
 
 
 player :: Picture
@@ -42,12 +42,12 @@ player  = headP
 
 
 -- Draw player
-headP = translated(solidCircle(1.2), -5, 0)
-leftArmP = translated(rotated(solidRectangle(4, 0.4), 135), -3.7, -2.4) 
-rightArmP = translated(rotated(solidRectangle(4, 0.4), 45), -6.3, -2.4)
-bodyP = translated(rotated(solidRectangle(5, 0.4), 90), -5, -3.4)
-leftLegP = translated(rotated(solidRectangle(4, 0.4), 135), -3.7, -7) 
-rightLegP = translated(rotated(solidRectangle(4, 0.4), 45), -6.3, -7)
+headP = translated (-5) (0) (solidCircle(1.2))
+leftArmP = translated (-3.7) (-2.4) (rotated (135) (solidRectangle(4, 0.4))) 
+rightArmP = translated (-6.3) (-2.4) (rotated (45) (solidRectangle(4, 0.4)))
+bodyP = translated (-5) (-3.4) (rotated (90) (solidRectangle(5, 0.4)))
+leftLegP = translated (-3.7) (-7) (rotated (135) (solidRectangle(4, 0.4))) 
+rightLegP = translated (-6.3) (-7) (rotated (45) (solidRectangle(4, 0.4)))
 
 
 enemy :: Picture
@@ -60,28 +60,28 @@ enemy = headE
 
 
 -- Draw enemy
-headE = translated(solidCircle(1.2), 5, 0)
-leftArmE = translated(rotated(solidRectangle(4, 0.4), 135), 6.3, -2.4) 
-rightArmE = translated(rotated(solidRectangle(4, 0.4), 45), 3.7, -2.4)
-bodyE = translated(rotated(solidRectangle(5, 0.4), 90), 5, -3.4)
-leftLegE = translated(rotated(solidRectangle(4, 0.4), 135), 6.3, -7) 
-rightLegE = translated(rotated(solidRectangle(4, 0.4), 45), 3.7, -7)
+headE = translated (5) (0) (solidCircle(1.2))
+leftArmE = translated (6.3) (-2.4) (rotated (135) (solidRectangle(4, 0.4))) 
+rightArmE = translated (3.7) (-2.4) (rotated (45) (solidRectangle(4, 0.4)))
+bodyE = translated (5) (-3.4) (rotated (90) (solidRectangle(5, 0.4),))
+leftLegE = translated (6.3) (-7) (rotated (135) (solidRectangle(4, 0.4))) 
+rightLegE = translated (3.7) (-7) (rotated (45) (solidRectangle(4, 0.4)))
 
 
 
 playerStats :: (Double,Double,Double,Double,Double) -> Picture
-playerStats (l,f,tnj,s,v) = translated(lettering(pack("Ataque: "++show(l))),-8.5,7)
-                 & translated(lettering(pack("Felicidad: "++show(f))),-8.5,6)
-                 & translated(lettering(pack("Intimidar: "++show(tnj))),-8.5,5)
-                 & translated(lettering(pack("Sanar: "++show(s))),-8.5,4)
-                 & translated(lettering(pack("Vida: "++show(v))),-8.5,3)
-                 & translated(rectangle(7.5,6),-8.5,5.5)
+playerStats (l,f,tnj,s,v) = translated (-8.5) (7) (lettering(pack("Ataque: "++show(l))))
+                 & translated (-8.5) (6) (lettering(pack("Felicidad: "++show(f))))
+                 & translated (-8.5) (5) (lettering(pack("Intimidar: "++show(tnj))))
+                 & translated (-8.5) (4) (lettering(pack("Sanar: "++show(s))))
+                 & translated (-8.5) (3) (lettering(pack("Vida: "++show(v))))
+                 & translated (-8.5) (5.5) (rectangle (7.5) (6))
 
 
 enemStats :: (Double,Double,Double,Double,Double) -> Picture
-enemStats (l,f,tnj,s,v) = translated(lettering(pack("Ataque: "++show(l))),8.5,7)
-                 & translated(lettering(pack("Felicidad: "++show(f))),8.5,6)
-                 & translated(lettering(pack("Intimidar: "++show(tnj))),8.5,5)
-                 & translated(lettering(pack("Sanar: "++show(s))),8.5,4)
-                 & translated(lettering(pack("Vida: "++show(v))),8.5,3)
-                 & translated(rectangle(7.5,6),8.5,5.5)
+enemStats (l,f,tnj,s,v) = translated (8.5) (7) (lettering(pack("Ataque: "++show(l))))
+                 & translated (8.5) (6) (lettering(pack("Felicidad: "++show(f))))
+                 & translated (8.5) (5) (lettering(pack("Intimidar: "++show(tnj))))
+                 & translated (8.5) (4) (lettering(pack("Sanar: "++show(s))))
+                 & translated (8.5) (3) (lettering(pack("Vida: "++show(v))))
+                 & translated (8.5) (5.5)(rectangle (7.5) (6))
