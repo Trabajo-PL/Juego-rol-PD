@@ -58,7 +58,7 @@ kal = SP.Pers "Kal" (-1) 1 2 1 10
 evento:: Event -> World -> World
 evento (KeyPress k) world = case (actualT world) of
           0 -> case k of
-                "R" -> firstWorld
+                "Enter" -> firstWorld
                 _ -> world
                   
           1 -> case k of
@@ -108,15 +108,6 @@ evento (KeyPress k) world = case (actualT world) of
                 firstWorld = world {rowH = nextR, rowPA = 1, optiosH = optiosH', actualT = 1}
                   where (nextR, optiosH', _) = (dataH world)!!0
 evento _ world = world 
-{-
-0 = inicio
-3,4 = has ganado/has perdido
-5,6 = resume tanto texto como batalla
-1,2 = texto/batalla
-Enter = Resume -> volver a donde estabas (para el esc, si estamos en las pantallas de has pedido/ has ganado vuelves al inicio)
-R = reinicio -> volver a empezar
-pantalla salir batalla/pantalla entrar batalla
--}
 
 historiaCSV:: IO [Datos.HistoriaCSV]
 historiaCSV  = readerHistory
@@ -144,7 +135,7 @@ getTexto fila tipoA hCSV' = case tipoA of
 drawWorld:: World -> Picture
 drawWorld world = 
   case (actualT world) of
-    0 -> {- startDraw -} lettering (pack (show (rowH world))) <> colored (red) (solidCircle 1) 
+    0 -> Dr.initDraw --{- startDraw -} lettering (pack (show (rowH world))) <> colored (red) (solidCircle 1) 
     1 -> Dr.textDraw optionsH' statsC textH'  
         where   statsC = SP.statsCaracter (principalC world)
                 optionsH' = (optiosH world)
@@ -159,9 +150,7 @@ drawWorld world =
     5 -> Dr.resumeDraw 
     6 -> Dr.resumeDraw
 
-
 -- COMBATE
-
 
 getCombate :: World -> Integer -> World
 getCombate world action = getCombateAux world py' en' rands'
@@ -171,10 +160,6 @@ getCombate world action = getCombateAux world py' en' rands'
                 (py, en) = (battle world)
                 (py',en') = SP.ejecutaAccion py action en ae (head (randoms world))
 
-{-
-        case inCombat' of
-          0 -> world {battle = (kal, nextEnemy), inCombat = (1,0)}
-          1 ->-}
 getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
 getCombateAux world player enemy rAct
           | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 2}
@@ -182,7 +167,6 @@ getCombateAux world player enemy rAct
           | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
             where (finComb,_) = SP.finalCombate player enemy
 
-
-selEnem :: Integer -> Pila SP.Personaje -> SP.Personaje
+selEnem :: Integer -> Pila SP.Personaje-> SP.Personaje
 selEnem 1 pila = cima pila
 selEnem n pila = selEnem (n-1) (desapila pila)
