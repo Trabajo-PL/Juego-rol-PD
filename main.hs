@@ -58,37 +58,61 @@ kal = SP.Pers "Kal" (-1) 1 2 1 10
 evento:: Event -> World -> World
 evento (KeyPress k) world = case (actualT world) of
           0 -> case k of
-                "1" -> world {rowH = nextR, rowPA = 1, optiosH = optiosH', actualT = 1}
-                  where (nextR, optiosH', _) = (dataH world)!!0
+                "R" -> firstWorld
                 _ -> world
                   
           1 -> case k of
                 "1" -> (updateWorld (rowPA world) 1 world)
                 "2" -> (updateWorld (rowPA world) 2 world)
-                "3" -> (updateWorld (rowPA world) 3 world) 
+                "3" -> (updateWorld (rowPA world) 3 world)
+                "Esc" -> world {actualT = 5} 
                 _   -> world
-          2 -> case k of
-                "1" -> (getCombate world 1)
-                "2" -> (getCombate world 2)
-                "3" -> (getCombate world 3)
-                "4" -> (getCombate world 4)
+          2 ->case inCombat' of 
+                0 -> case k of
+                      "Enter" -> world {battle = (kal, nextEnemy), inCombat = (1,1)}
+                      _ -> world
+                      where nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
+                1 -> case k of
+                      "1" -> (getCombate world 1)
+                      "2" -> (getCombate world 2)
+                      "3" -> (getCombate world 3)
+                      "4" -> (getCombate world 4)
+                      "Esc" -> world {actualT = 6}
+                      _ -> world
                 _ -> world
+            where (_,inCombat') = (inCombat world)
           3 -> case k of
-                "Enter" -> world {rowH = 1, rowPA = 0, optiosH = ("","",""), principalC = kal, actualT = 0, battle = (kal, kal), inCombat = (0,0)}
-                  where py = kal
-                        en = kal
-                "R" ->  world {rowH = nextR, rowPA = 1, optiosH = optiosH'}
-                  where (nextR, optiosH', _) = (dataH world)!!0
+                "Enter" -> iniWorld
+                "R" ->  firstWorld
                 _ -> world
           4 -> case k of
-                "Enter" -> world {rowH = 1, rowPA = 0, optiosH = ("","",""), principalC = kal, actualT = 0, battle = (kal, kal), inCombat = (0,0)}
-                  where py = kal
-                        en = kal
-                "R" ->  world {rowH = nextR, rowPA = 1, optiosH = optiosH'}
-                  where (nextR, optiosH', _) = (dataH world)!!0
+                "Enter" -> iniWorld
+                "R" ->  firstWorld
+          5 -> case k of
+                "Esc" -> world {actualT = 1}
+                "Enter" -> iniWorld
+                "R" ->  firstWorld
+                _ -> world
+          6 -> case k of
+                "Esc" -> world {actualT = 2}
+                "Enter" -> iniWorld
+                "R" ->  firstWorld
                 _ -> world
           _ -> world
+          where iniWorld = world {rowH = 1, rowPA = 0, optiosH = ("","",""), principalC = kal, actualT = 0, battle = (kal, kal), inCombat = (0,0)}
+                  where py = kal
+                        en = kal
+                firstWorld = world {rowH = nextR, rowPA = 1, optiosH = optiosH', actualT = 1}
+                  where (nextR, optiosH', _) = (dataH world)!!0
 evento _ world = world 
+{-
+0 = inicio
+3,4 = has ganado/has perdido
+5,6 = resume tanto texto como batalla
+1,2 = texto/batalla
+Enter = Resume -> volver a donde estabas (para el esc, si estamos en las pantallas de has pedido/ has ganado vuelves al inicio)
+R = reinicio -> volver a empezar
+-}
 
 historiaCSV:: IO [Datos.HistoriaCSV]
 historiaCSV  = readerHistory
@@ -121,10 +145,15 @@ drawWorld world =
         where   statsC = SP.statsCaracter (principalC world)
                 optionsH' = (optiosH world)
                 textH' = (textHistory world)!!(fromIntegral (rowH world)-1)
-    2 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
-        where   (py, en) = (battle world)
+    2 -> case inCombat' of
+          0 -> lettering (pack "DALE ENTER") <> colored (yellow) (solidCircle 1)
+          1 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
+            where   (py, en) = (battle world)
+      where (_, inCombat') = (inCombat world)
     3 -> {-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
     4 -> {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
+    5 -> {-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME TEXTO") <> colored (yellow) (solidCircle 1)
+    6 -> {-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME BATALLA") <> colored (yellow) (solidCircle 1)
 
 
 -- COMBATE
