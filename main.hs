@@ -112,6 +112,7 @@ evento _ world = world
 1,2 = texto/batalla
 Enter = Resume -> volver a donde estabas (para el esc, si estamos en las pantallas de has pedido/ has ganado vuelves al inicio)
 R = reinicio -> volver a empezar
+pantalla salir batalla/pantalla entrar batalla
 -}
 
 historiaCSV:: IO [Datos.HistoriaCSV]
