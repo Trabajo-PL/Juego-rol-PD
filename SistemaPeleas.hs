@@ -13,7 +13,7 @@ module SistemaPeleas
 ) where
 
 -------------------------------------------------Imports-----------------------------------------------------
-
+import I1M.Pila
 import Data.Char
 import Text.Printf
 import System.IO
@@ -41,7 +41,7 @@ ninoPueblo :: Personaje
 ninoPueblo = Pers "Pepe" 0 0 1 1 4.0
 
 guerrero :: Personaje
-guerrero = "Guerrero Juan" 1 1 2 2 4.0 
+guerrero = Pers "Guerrero Juan" 1 1 2 2 4.0 
 
 ultimoEn :: Personaje
 ultimoEn = Pers "Random Bro" 2 1 2 3 6.0
