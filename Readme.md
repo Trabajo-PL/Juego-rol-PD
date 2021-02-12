@@ -1,11 +1,11 @@
-##                                                                                   Una Triste Historia
+#                                                                                   Una Triste Historia
 
-Este es un trabajo para la Universidad de Sevilla, concretamente para la asignatura de Programación Declarativa, realizado por Jose Morera Figueroa y Víctor Rosario Nuñez.
+Este es un trabajo para la Universidad de Sevilla, concretamente para la asignatura de Programación Declarativa, realizado por Jose Morera Figueroa y Víctor Rosario Nuñez.  
 A continuación pasaré a hacer tanto una introducción como una descripción del trabajo.
 
-####                                                                                 Pequeña Introducción
+###                                                                                 Pequeña Introducción
 
-El trabajo es un juego de rol con una visualización simple, desarrollado en el lenguaje de programación funcional Haskell. 
+El trabajo es un juego de rol con una visualización simple, desarrollado en el lenguaje de programación funcional __Haskell__. 
 
 
 ![](https://sugus.eii.us.es/sugupedia/images/c/c9/Haskell-logo.jpg)
