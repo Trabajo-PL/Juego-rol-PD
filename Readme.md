@@ -7,7 +7,7 @@ A continuación pasaré a hacer tanto una introducción como una descripción de
 El trabajo es un juego de rol con una visualización simple, desarrollado en el lenguaje de programación funcional Haskell. 
 
 
-![](https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.47deg.com%2Fassets%2Fimg%2Fblog%2Ffeatured_images%2F2019-11-18-setting-up-haskell-environment.png&imgrefurl=https%3A%2F%2Fwww.47deg.com%2Fblog%2Fsetting-up-haskell%2F&tbnid=Gry5K9deyw--xM&vet=12ahUKEwj56-uC5OTuAhVUwIUKHVxiCWUQMygAegUIARCeAQ..i&docid=gEZzA9A-BecnnM&w=1024&h=512&q=Haskell&ved=2ahUKEwj56-uC5OTuAhVUwIUKHVxiCWUQMygAegUIARCeAQ)
+![](https://www.google.com/imgres?imgurl=https%3A%2F%2Fsugus.eii.us.es%2Fsugupedia%2Fimages%2Fc%2Fc9%2FHaskell-logo.jpg&imgrefurl=https%3A%2F%2Fsugus.eii.us.es%2Fsugupedia%2Findex.php%3Ftitle%3DArchivo%3AHaskell-logo.jpg&tbnid=UhsG5yO97GKaIM&vet=12ahUKEwim56yg6OTuAhVEpBoKHa1XCV0QMygBegUIARCeAQ..i&docid=TYV36NRXX82w9M&w=431&h=172&q=Haskell%20logo&ved=2ahUKEwim56yg6OTuAhVEpBoKHa1XCV0QMygBegUIARCeAQ)
 
 
 Como visor gráfico hemos usado Codeworld, este nos ha servido para visualizar de mejor manera tanto el texto de rol de la historia, como las opciones que puede escoger el jugador 
