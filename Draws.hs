@@ -18,7 +18,7 @@ import Datos as D
 -- **************************** --
 
 textDraw:: D.OpcionesH -> (String, Double, Double, Double, Double, Double) -> String -> Picture
-textDraw optionsH principalC textH = ((text2Line textH 23 (0,7.5) (0.65, 0.75)) & principalTextRectangle & (colored (light yellow) (blank)) & optionsRectangles optionsH & statsRectangle principalC & (drawBackground))
+textDraw optionsH principalC textH = ((text2Line textH 23 (0,7.5) (0.65, 0.75)) & principalTextRectangle & (colored (light yellow) (blank)) & optionsRectangles optionsH & statsRectangle principalC & (drawBackground blue))
         -- Dibujo de la parte del texto:
         -- Primero las funciones necesarias para imprimir diferentes lineas, ya que el .txt aparece todo como 1.
 -- FUNCIONES para tratar texto        
@@ -54,8 +54,8 @@ statsRectangle principalC = translated (0) (-4) (lettering (pack ("Stats de "++n
     where   texto' = (lettering (pack ("Luchar: "++(show lucha)++" Sanar: "++ (show sanar)++" Intimidar: "++(show intimidar)++" Felicidad: "++(show felicidad)++ "Vida: "++(show vida))))
             (nombre, lucha, sanar, intimidar, felicidad, vida) = principalC
 
-drawBackground:: Picture
-drawBackground = colored (dark blue) $ solidRectangle (50) (50)
+drawBackground:: Color -> Picture
+drawBackground colr= colored (dark colr) $ solidRectangle (100) (100)
 
 
 -- **************************** --
