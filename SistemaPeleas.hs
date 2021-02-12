@@ -11,9 +11,7 @@ module SistemaPeleas
     Personaje(Pers)
 ) where
 
-
 -------------------------------------------------Imports-----------------------------------------------------
-
 
 import Data.Char
 import Text.Printf
@@ -21,84 +19,39 @@ import System.IO
 import System.Random
 import Data.Default
 
-
 --------------------------------------------------------------------------------------------------------------
-
-
 -------------------------------------------------Recursos-----------------------------------------------------
-
-
 -- Estructura básica de las habilidades de un personaje
-
 
 data Personaje = Pers { nombre :: String, felicidad :: Double, talkNoJutsu :: Double, 
                         sanar :: Double, luchar :: Double, vida :: Double }
                 deriving (Show)
 
-
 -- Definición básica de un personaje por si se nos olvida definir alguno del todo bien
-
 
 instance Default Personaje where
         def = Pers { nombre = "nombreDefecto" , felicidad = def , talkNoJutsu = 1.0 , 
             sanar = 1.0 , luchar = 1.0, vida = 3.0}
-
 
 -- Para acceder al atributo concreto de un campo del registro, primero se nombra el campo y después el regis-
 -- tro definido. Por ejemplo, para acceder a la felicidad de este personaje -> felicidad niñoPueblo
 
 ninoPueblo = Pers {nombre = "Pepe", felicidad = -1, talkNoJutsu = 0, sanar = 0, luchar = 1, vida = 3.0}
 
-
 -- Declaración de los puntos totales de cada atributo
 
 ptsFel :: Double
 ptsFel = 8
 
-
 --------------------------------------------------------------------------------------------------------------
 
-
 ---------------------------------------------Funciones Auxiliares---------------------------------------------
-
-
---Devuelve un número aleatorio entre 0 y 1 de tipo double, usarlo en bloques "do" -> IO
-
-
---aleatorio :: IO Double
---aleatorio = getStdRandom (randomR (0,1))
 
 aleatorio :: IO [Double]
 aleatorio = do 
         g <- getStdGen
         let fgen = randomRs (0, 1) g :: [Double]
         return fgen
-
-
--- Sólo una pequeña prueba para una idea de la división de los puntos conseguidos entre los totales, 
--- para las diferentes probabilidades 
-
-{-
-main = do
-        a <- aleatorio
-        let as = take 500 a
-        putStrLn $ show as
--}
-
-
--- Obtener dato de un registro
-
-
-{-obtenerFelicidad,obtenerSanar,obtenerLuchar,obtenerTnJ :: Personaje -> Double
-
-obtenerFelicidad personaje = felicidad personaje
-
-obtenerSanar personaje = sanar personaje
-
-obtenerLuchar personaje = luchar personaje
-
-obtenerTnJ personaje = talkNoJutsu personaje-}
-
 
 obtenerStat :: Integer -> Personaje -> Double
 obtenerStat stat personaje
@@ -112,16 +65,6 @@ obtenerStat stat personaje
                               obtenerLuchar personaje = luchar personaje
                               obtenerTnJ personaje = talkNoJutsu personaje
                               obtenerVida personaje = vida personaje
-
-
-
-{-
-main  = do
-        let kal = def {nombre="Kal", luchar = 5}
-        putStrLn $ show kal -- Para mostrar el registro personaje meterlo dentro de un Show
-        return (obtenerStat "Luchar" kal)
--}
-
 
 -- Modificar un dato de un registro
 
@@ -137,7 +80,6 @@ modificarTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu person
 
 modificarVida act personaje = personaje { vida = min 10 (act + (vida personaje)) }
 
-
 modificaStat :: Integer -> Double -> Personaje -> Personaje
 modificaStat stat val personaje = case stat of
                         1 -> modificarLuchar val personaje
@@ -147,21 +89,7 @@ modificaStat stat val personaje = case stat of
                         5 -> modificarVida val personaje
                         _ -> personaje
 
-
--- De nuevo lo siguiente es una prueba para probar un poco el testeo y ver cómo funcionan las cosas
-
-{-
-main  = do
-        let kal = def {nombre="Kal"}
-        putStrLn $ show kal -- Para mostrar el registro personaje meterlo dentro de un Show
-        let kal' = modificaStat "Felicidad" 2 kal
-        let kal = kal'
-        return kal
--}
-
-
 --Ver si un combate ha finalizado y quién ha ganado si ha finalizado
-
 
 finalCombate :: Personaje -> Personaje -> (Integer,String)
 finalCombate player enemy
@@ -171,37 +99,11 @@ finalCombate player enemy
                                 where vp = obtenerStat 5 player
                                       ve = obtenerStat 5 enemy
 
-
---Testeo habitual de la función, vemos que al recibir un ataque, 
---si este nos deja a 0 de vida hemos perdido el combate
-
-{-
-main  = do
-        let kal = def {nombre="Kal"}
-        let (x,y) = finalCombate kal ninoPueblo
-        putStrLn $ show $ (x,y)
-        let kal' = modificaStat 5 (-3) kal
-        return (finalCombate kal' ninoPueblo)
--}
-
-
 -- Esquiva, esta función calculará la probabilidad de esquivar del personaje en función a sus puntos 
 -- de Felicidad sobre el total
 
 esquiva :: Personaje -> Double -> Bool
 esquiva personaje rand = ((max 0 (obtenerStat 4 personaje))/ptsFel) > rand
-
-
--- Un pequeño test en el que vemos que si la felicidad es cercana al máximo, casi siempre se esquiva
-{-
-main = do
-        let kal = def {nombre="Kal", felicidad=7}
-        y <- aleatorio
-        let x = (esquiva kal y)
-        putStrLn $ show x
--}
-
-
 
 -- Recibe ataque, esta función se encargará de devolver el personaje actualizado si ha recibido el ataque de otro
 
@@ -210,37 +112,11 @@ recibeAtaque p1 p2 rand
                 | esquiva p1 rand = p1
                 | otherwise = modificaStat 5 (-(obtenerStat 1 p2)) p1
 
-
--- Efectivamente la felicidad afecta a la probabilidad de esquivar el personaje que vaya a recibir el ataque
-{-
-main = do
-        let kal = def {nombre="Kal", felicidad=0}
-        y <- aleatorio
-        let x = recibeAtaque kal ninoPueblo y
-        putStrLn $ show x
----}
-
-
 -- Acción aleatoria, esta función tendrá un resultado entre 1 y 4 que dado un número aleatorio determinará la 
 -- acción que llevará a cabo el enemigo
 
 accionAleatoria :: Double -> Integer
 accionAleatoria r = ceiling (r*4)
-
-
--- Bueno mira, no quería ser pesado, pero hay que realizar testeos para comprobar que todo funciona de manera individual
-
-{-
-main = do
-        a <- aleatorio
-        let as = take 20 a
-        let kal = def {nombre="Kal", felicidad=4, luchar=1}
-        putStrLn $ show $ accionAleatoria $ as !! 2
-        putStrLn $ show $ accionAleatoria $ as !! 3
-        putStrLn $ show $ accionAleatoria $ as !! 4
-        putStrLn $ show $ ejecutaAccion kal 1 ninoPueblo (accionAleatoria (head as)) (head (tail as))
--}
-
 
 {-
 En la siguiente función se especificará cómo afectan las acciones que realice el jugador en un combate
@@ -251,8 +127,6 @@ Sí tenemos en cuenta el siguiente orden:
         3.- Hablar
         4.- Sanarse
 -}
-
-
 ejecutaAccion :: Personaje -> Integer -> Personaje -> Integer -> Double -> (Personaje,Personaje)
 ejecutaAccion player ap enemy ae rand -- Acción player, Acción enemigo
                         | (ap == 1 && ae == 2) || (ap == 2 && ae == 1) = (player,enemy) --Si uno defiende y otro ataca se quedan igual
@@ -273,30 +147,6 @@ ejecutaAccion player ap enemy ae rand -- Acción player, Acción enemigo
                                 where cura p = modificaStat 5 (obtenerStat 2 p) p
                                       tnj h o = modificaStat 4 (- obtenerStat 3 h) o
 
-
--- Efectivamente, justo debajo, como siempre, otro test, sí, pruebo diferentes opciones...
-
-{-
-main = do
-        let kal = def {nombre="Kal", felicidad=4, luchar=1}
-        let nP = def {nombre="El Lolo", felicidad=0, luchar=1}
-        rand <- aleatorio
-        putStrLn $ show rand
-        let (kal',nP') = ejecutaAccion kal 1 nP 1 rand
-        putStrLn $ show (kal',nP')
-        let (kal,nP) = ejecutaAccion kal' 1 nP' 3 rand
-        putStrLn $ show (kal,nP)
-        let (kal',nP') = ejecutaAccion kal 3 nP 1 rand
-        putStrLn $ show (kal',nP')
-        let (kal,nP) = ejecutaAccion kal' 4 nP' 1 rand
-        putStrLn $ show (kal,nP)
-        let (kal',nP') = ejecutaAccion kal 1 nP 1 rand
-        putStrLn $ show (kal',nP')
-        let (kal,nP) = ejecutaAccion kal' 1 nP' 1 rand
-        putStrLn $ show (kal,nP)
-        let (kal',nP') = ejecutaAccion kal 1 nP 1 rand
-        putStrLn $ show (kal',nP')
----}
 statsCaracter:: Personaje -> (String, Double, Double, Double, Double, Double)
 statsCaracter principalC = (name, figth, heal, talk, happy, health)
         where   name = (nombre principalC)
