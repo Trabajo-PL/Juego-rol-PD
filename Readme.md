@@ -20,4 +20,5 @@ El programa se podría dividir en tres partes:
   3. Por último, un sistema de lectura de Datos, con el cual hemos leído toda la historia y las alternativas según las decisiones, de diferentes archivos.
 
 
-> Viaje frente a destino.
+> Viaje frente a destino.  
+> Aceptamos donativos para mejorar la calidad y la producción de nuestro juego. -Ambos Alumnos
