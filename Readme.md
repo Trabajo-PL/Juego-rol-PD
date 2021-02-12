@@ -21,3 +21,4 @@ El programa se podría dividir en tres partes:
 
 
 > Viaje frente a destino.
+> Aceptamos donativos para mejorar la calidad y la producción de nuestro juego. -Ambos Alumnos
