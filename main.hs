@@ -5,7 +5,6 @@ import System.IO
 import Data.Array
 import Data.Default
 import Data.List
-import I1M.Pila -- Import añadido para la pila de enemigos
 -- Modulos nuestros:
 import Datos
 import SistemaPeleas as SP
@@ -16,18 +15,6 @@ import Draws as Dr
 
 data World = World {rowH :: Integer, rowPA:: Integer, optiosH:: Datos.OpcionesH, principalC:: SP.Personaje, actualT:: Integer, powerUps:: Matriz Datos.Opciones,
                       dataH:: [Datos.HistoriaCSV], battle:: (SP.Personaje, SP.Personaje), randoms:: [Double], inCombat:: Integer, textHistory:: [String]}
-
-ninoPueblo :: SP.Personaje
-ninoPueblo = SP.Pers "Pepe" (-1) 0 1 1 4.0
-
-guerrero :: SP.Personaje
-guerrero = def 
-
-ultimoEn :: SP.Personaje
-ultimoEn = Pers "Random Bro" 3 3 3 4 8.0
-
-pilaEnemys :: Pila SP.Personaje
-pilaEnemys = foldr apila vacia [ninoPueblo,guerrero,ultimoEn]
 
 
 type Matriz a = Array (Int,Int) Datos.Opciones
@@ -71,7 +58,7 @@ evento (KeyPress k) world = case (actualT world) of
                   0 -> case k of
                         "Enter" -> world {battle = (kal, nextEnemy), inCombat = 1}
                         _ -> world
-                        where nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
+                        where nextEnemy = SP.selEnem (ceiling (fromIntegral ((rowH world) `div` 3)))
                   1 -> case k of
                         "1" -> (getCombate world 1)
                         "2" -> (getCombate world 2)
@@ -165,7 +152,3 @@ getCombateAux world player enemy rAct
           | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = 1}
           | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
             where (finComb,_) = SP.finalCombate player enemy
-
-selEnem :: Integer -> Pila SP.Personaje-> SP.Personaje
-selEnem 1 pila = cima pila
-selEnem n pila = selEnem (n-1) (desapila pila)
