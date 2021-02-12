@@ -3,7 +3,7 @@
 Este es un trabajo para la Universidad de Sevilla, concretamente para la asignatura de Programación Declarativa, realizado por Jose Morera Figueroa y Víctor Rosario Nuñez.  
 A continuación pasaré a hacer tanto una introducción como una descripción del trabajo.
 
-###                                                                                 Pequeña Introducción
+###                                                                                   Introducción
 
 El trabajo es un juego de rol con una visualización simple, desarrollado en el lenguaje de programación funcional __Haskell__. 
 
