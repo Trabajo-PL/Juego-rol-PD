@@ -20,7 +20,7 @@ import Text.Printf
 import System.IO
 import System.Random
 import Data.Default
-
+import I1M.Pila -- Import añadido para la pila de enemigos
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -47,7 +47,17 @@ instance Default Personaje where
 -- Para acceder al atributo concreto de un campo del registro, primero se nombra el campo y después el regis-
 -- tro definido. Por ejemplo, para acceder a la felicidad de este personaje -> felicidad niñoPueblo
 
-ninoPueblo = Pers {nombre = "Pepe", felicidad = -1, talkNoJutsu = 0, sanar = 0, luchar = 1, vida = 3.0}
+ninoPueblo :: Personaje
+ninoPueblo = Pers "Pepe" 0 0 1 1 4.0
+
+guerrero :: Personaje
+guerrero = "Guerrero Juan" 1 1 2 2 4.0 
+
+ultimoEn :: Personaje
+ultimoEn = Pers "Random Bro" 2 1 2 3 6.0
+
+pilaEnemys :: Pila SP.Personaje
+pilaEnemys = foldr apila vacia [ninoPueblo,guerrero,ultimoEn]
 
 
 -- Declaración de los puntos totales de cada atributo
@@ -305,4 +315,13 @@ statsCaracter principalC = (name, figth, heal, talk, happy, health)
                 talk = (talkNoJutsu principalC)
                 happy = (felicidad principalC)
                 health = (vida principalC)
+                
+                
+               
+selEnem :: Integer -> Pila SP.Personaje-> SP.Personaje
+selEnem n = enem n pilaEnemys
+        where   enem 1 pila = cima pila 
+                enem n pila = enem (n-1) (desapila pila)
+               
+               
 --------------------------------------------------------------------------------------------------------------
