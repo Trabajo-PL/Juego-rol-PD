@@ -151,10 +151,10 @@ drawWorld world =
           1 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
             where   (py, en) = (battle world)
       where (_, inCombat') = (inCombat world)
-    3 -> {-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
-    4 -> {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
-    5 -> {-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME TEXTO") <> colored (yellow) (solidCircle 1)
-    6 -> {-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME BATALLA") <> colored (yellow) (solidCircle 1)
+    3 -> Dr.endDraw "Has Perdido" (dark (dark gray)) --{-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
+    4 -> Dr.endDraw "Has Ganado" (light (light blue))-- {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
+    5 -> Dr.resumeDraw --{-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME TEXTO") <> colored (yellow) (solidCircle 1)
+    6 -> Dr.resumeDraw --{-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME BATALLA") <> colored (yellow) (solidCircle 1)
 
 
 -- COMBATE
