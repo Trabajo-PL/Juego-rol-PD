@@ -255,7 +255,6 @@ Sí tenemos en cuenta el siguiente orden:
 
 ejecutaAccion :: Personaje -> Integer -> Personaje -> Integer -> Double -> (Personaje,Personaje)
 ejecutaAccion player ap enemy ae rand -- Acción player, Acción enemigo
-                        | ap == 0 = (player, enemy)
                         | (ap == 1 && ae == 2) || (ap == 2 && ae == 1) = (player,enemy) --Si uno defiende y otro ataca se quedan igual
                         | ap == 2 && ae == 2 = (player,enemy) -- Si los dos defienden se quedan igual
                         | ap == 1 && ae == 1 = (recibeAtaque player enemy rand,recibeAtaque enemy player rand) -- Los dos atacan
