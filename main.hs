@@ -15,7 +15,7 @@ import Draws as Dr
 -- ---------******** TIPOS ********---------- --
 
 data World = World {rowH :: Integer, rowPA:: Integer, optiosH:: Datos.OpcionesH, principalC:: SP.Personaje, actualT:: Integer, powerUps:: Matriz Datos.Opciones,
-                      dataH:: [Datos.HistoriaCSV], battle:: (SP.Personaje, SP.Personaje), randoms:: [Double], inCombat:: (Integer, Integer), textHistory:: [String]}
+                      dataH:: [Datos.HistoriaCSV], battle:: (SP.Personaje, SP.Personaje), randoms:: [Double], inCombat:: Integer, textHistory:: [String]}
 
 ninoPueblo :: SP.Personaje
 ninoPueblo = SP.Pers "Pepe" (-1) 0 1 1 4.0
@@ -46,7 +46,7 @@ initialWorld = do
       as <-  SP.aleatorio
       text <- Datos.readerText
       let rands = as
-      let world = World 1 0 ("","","") kal 0 datosAumento' hCSV' (py,en) rands (0,0) text
+      let world = World 1 0 ("","","") kal 0 datosAumento' hCSV' (py,en) rands 0 text
       return world
       where py = kal
             en = kal
@@ -69,7 +69,7 @@ evento (KeyPress k) world = case (actualT world) of
                 _   -> world
           2 ->case inCombat' of 
                   0 -> case k of
-                        "Enter" -> world {battle = (kal, nextEnemy), inCombat = (1,1)}
+                        "Enter" -> world {battle = (kal, nextEnemy), inCombat = 1}
                         _ -> world
                         where nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
                   1 -> case k of
@@ -80,7 +80,7 @@ evento (KeyPress k) world = case (actualT world) of
                         "Esc" -> world {actualT = 6}
                         _ -> world
                   2 -> case k of
-                        "Enter" -> world {actualT = 1, inCombat = (0,0)}
+                        "Enter" -> world {actualT = 1, inCombat = 0}
                         _ -> world
                   _ -> world
             where (_,inCombat') = (inCombat world)
@@ -103,7 +103,7 @@ evento (KeyPress k) world = case (actualT world) of
                 "R" ->  firstWorld
                 _ -> world
           _ -> world
-          where iniWorld = world {rowH = 1, rowPA = 0, optiosH = ("","",""), principalC = kal, actualT = 0, battle = (kal, kal), inCombat = (0,0)}
+          where iniWorld = world {rowH = 1, rowPA = 0, optiosH = ("","",""), principalC = kal, actualT = 0, battle = (kal, kal), inCombat = 0}
                   where py = kal
                         en = kal
                 firstWorld = world {rowH = nextR, rowPA = 1, optiosH = optiosH', actualT = 1}
@@ -180,9 +180,9 @@ getCombate world action = getCombateAux world py' en' rands'
           1 ->-}
 getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
 getCombateAux world player enemy rAct
-          | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = (0,2)}
-          | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = (1,1)}
-          | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = (0,0)}
+          | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 2}
+          | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = 1}
+          | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
             where (finComb,_) = SP.finalCombate player enemy
 
 
