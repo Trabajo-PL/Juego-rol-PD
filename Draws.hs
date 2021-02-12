@@ -1,7 +1,10 @@
 module Draws(
 
     textDraw,
-    combatDraw
+    combatDraw,
+    endDraw,
+    resumeDraw,
+    intoBDraw
 
  ) where 
 {-# LANGUAGE OverloadedStrings #-}
@@ -95,7 +98,7 @@ actions= attackText & defText & tnjText & curarseText
          & translated (0) (-14.5) (rectangle(25) (6))
 
 stats :: (String, Double,Double,Double,Double,Double) -> Double -> Picture
-stats (n,l,f,tnj,s,v) t = translated (t) (8) (lettering(pack n))
+stats (n,l,s,tnj,f,v) t = translated (t) (8) (lettering(pack n))
                  & translated (t) (7) (lettering(pack("Ataque: "++show(l))))
                  & translated (t) (6) (lettering(pack("Felicidad: "++show(f))))
                  & translated (t) (5) (lettering(pack("Intimidar: "++show(tnj))))
@@ -122,5 +125,46 @@ rightLeg t = translated (-1.2+t) (-7) (rotated (0.785398) (solidRectangle(4) (0.
         -- __________ Transición del combate __________ --
 
 -- **************************** --
+--       DIBUJO del inicio      --
+-- **************************** --
+
+
+
+-- **************************** --
 --       DIBUJO del RESUME      --
 -- **************************** --
+
+
+resumeDraw:: Picture
+resumeDraw = colored (light green) (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack "RESUME")))) <>translated (0) (-1) (actionsRes) <>drawBackground (light (light brown))
+
+actionsRes:: Picture
+actionsRes = (textResume "Para:" (-2.5,4) (0.9,0.9)) <> (textResume "Continuar: Esc" (-1,1) (0.8,0.8)) <> (textResume "Nueva partida: R" (-0.8,-1) (0.8,0.8)) <> (textResume "Volver al inicio: Enter" (0,-3) (0.8,0.8)) <>colored (white) (solidRectangle (8) (10))
+
+-- **************************** --
+--       DIBUJO del fin         --
+-- **************************** --
+
+endDraw:: String -> Color -> Picture
+endDraw tex clr = colored (red) (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack tex)))) <>translated (0) (-1) (actionsEnd) <>drawBackground clr
+
+actionsEnd:: Picture
+actionsEnd = (textResume "Para:" (-2.5,4) (0.9,0.9)) <> (textResume "Nueva partida: R" (-0.8,1) (0.8,0.8)) <> (textResume "Volver al inicio: Enter" (0,-1) (0.8,0.8)) <>colored (white) (solidRectangle (8) (10)) 
+
+textResume:: String -> (Double, Double) -> (Double, Double) -> Picture
+textResume tex (cX,cY) (sX,sY)= translated (cX) (cY) ( scaled (sX) (sY) (lettering (pack tex)))
+
+
+-- **************************** --
+--   DIBUJO del Entre batalla   --
+-- **************************** --
+
+
+intoBDraw:: String -> String -> Color -> Picture
+intoBDraw tex tex2 clr = (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack tex)))) <>translated (0) (0) (actionsBattle tex2) <>drawBackground clr
+
+actionsBattle:: String -> Picture
+actionsBattle tex = (textResume tex (0,0) (1,1)) <> colored (white) (solidRectangle (14) (5))
+
+
+
