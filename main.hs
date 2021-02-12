@@ -155,7 +155,6 @@ drawWorld world =
 getCombate :: World -> Integer -> World
 getCombate world action = getCombateAux world py' en' rands'
           where ae = SP.accionAleatoria (head (tail (randoms world)))
-                nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
                 rands' = tail $ tail (randoms world)
                 (py, en) = (battle world)
                 (py',en') = SP.ejecutaAccion py action en ae (head (randoms world))
