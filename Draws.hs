@@ -4,7 +4,8 @@ module Draws(
     combatDraw,
     endDraw,
     resumeDraw,
-    intoBDraw
+    intoBDraw,
+    initDraw
 
  ) where 
 {-# LANGUAGE OverloadedStrings #-}
@@ -59,7 +60,6 @@ statsRectangle principalC = translated (0) (-4) (lettering (pack ("Stats de "++n
 
 drawBackground:: Color -> Picture
 drawBackground colr= colored (dark colr) $ solidRectangle (100) (100)
-
 
 -- **************************** --
 --       DIBUJO combate         --
@@ -128,15 +128,18 @@ rightLeg t = translated (-1.2+t) (-7) (rotated (0.785398) (solidRectangle(4) (0.
 --       DIBUJO del inicio      --
 -- **************************** --
 
+initDraw:: Picture
+initDraw = (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack "Una Triste Historia")))) <>translated (0) (-2) (actionsInit) <> (drawBackground $ light $ light $ light pink)
 
+actionsInit:: Picture
+actionsInit = (textResume "Para Comenzar una partida" (0,4) (1,1)) <> (textResume "pulsa ENTER" (0,3) (1,1)) <> (textResume "Los controles funcionan pulsando " (0,1) (0.9,0.9)) <> (textResume "las teclas deseadas" (0,0) (0.9,0.9)) <> translated (0) (2) (colored (white) (solidRectangle (16) (8)))
 
 -- **************************** --
 --       DIBUJO del RESUME      --
 -- **************************** --
 
-
 resumeDraw:: Picture
-resumeDraw = colored (light green) (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack "RESUME")))) <>translated (0) (-1) (actionsRes) <>drawBackground (light (light brown))
+resumeDraw = colored (light green) (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack "RESUME")))) <>translated (0) (-1) (actionsRes) <> drawBackground (light (light brown))
 
 actionsRes:: Picture
 actionsRes = (textResume "Para:" (-2.5,4) (0.9,0.9)) <> (textResume "Continuar: Esc" (-1,1) (0.8,0.8)) <> (textResume "Nueva partida: R" (-0.8,-1) (0.8,0.8)) <> (textResume "Volver al inicio: Enter" (0,-3) (0.8,0.8)) <>colored (white) (solidRectangle (8) (10))
@@ -154,11 +157,9 @@ actionsEnd = (textResume "Para:" (-2.5,4) (0.9,0.9)) <> (textResume "Nueva parti
 textResume:: String -> (Double, Double) -> (Double, Double) -> Picture
 textResume tex (cX,cY) (sX,sY)= translated (cX) (cY) ( scaled (sX) (sY) (lettering (pack tex)))
 
-
 -- **************************** --
 --   DIBUJO del Entre batalla   --
 -- **************************** --
-
 
 intoBDraw:: String -> String -> Color -> Picture
 intoBDraw tex tex2 clr = (translated (0) (7) ( scaled (1.5) (1.5) (lettering (pack tex)))) <>translated (0) (0) (actionsBattle tex2) <>drawBackground clr
