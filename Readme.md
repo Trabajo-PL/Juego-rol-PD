@@ -19,3 +19,5 @@ El programa se podría dividir en tres partes:
   2. Un sistema de peleas, que tal y como indica su nombre se encarga de la ejecución de las peleas y de modificar a los personajes según sus acciones.
   3. Por último, un sistema de lectura de Datos, con el cual hemos leído toda la historia y las alternativas según las decisiones, de diferentes archivos.
 
+
+> Viaje frente a destino.

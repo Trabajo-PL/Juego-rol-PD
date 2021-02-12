@@ -270,8 +270,8 @@ ejecutaAccion player ap enemy ae rand -- Acción player, Acción enemigo
                         | ap == 4 && ae == 2 = (cura player, enemy) -- Tú te curas y él se defiende
                         | ap == 4 && ae == 3 = (tnj enemy (cura player),enemy) -- Tú te curas y él te baja la moral
                         | ap == 4 && ae == 4 = (cura player,cura enemy) -- Los dos os curáis
-                                where cura p = modificaStat 5 (obtenerStat 2 p) p
-                                      tnj h o = modificaStat 4 (- obtenerStat 3 h) o
+                                where cura p = modificaStat 5 (min 10 (obtenerStat 2 p)) p
+                                      tnj h o = modificaStat 4 (max 0 (- obtenerStat 3 h)) o
 
 
 -- Efectivamente, justo debajo, como siempre, otro test, sí, pruebo diferentes opciones...
