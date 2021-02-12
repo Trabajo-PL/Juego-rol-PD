@@ -67,7 +67,7 @@ evento (KeyPress k) world = case (actualT world) of
                 "3" -> (updateWorld (rowPA world) 3 world)
                 "Esc" -> world {actualT = 5} 
                 _   -> world
-          2 ->case inCombat' of 
+          2 ->case (inCombat world) of 
                   0 -> case k of
                         "Enter" -> world {battle = (kal, nextEnemy), inCombat = 1}
                         _ -> world
@@ -83,7 +83,6 @@ evento (KeyPress k) world = case (actualT world) of
                         "Enter" -> world {actualT = 1, inCombat = 0}
                         _ -> world
                   _ -> world
-            where (_,inCombat') = (inCombat world)
           3 -> case k of
                 "Enter" -> iniWorld
                 "R" ->  firstWorld
@@ -145,21 +144,20 @@ getTexto fila tipoA hCSV' = case tipoA of
 drawWorld:: World -> Picture
 drawWorld world = 
   case (actualT world) of
-    0 -> {- startDraw -} lettering (pack (show (rowH world))) <> colored (red) (solidCircle 1) -- <> personaje' <> colored (red) (solidCircle 1) -- <> texto3
-    1 -> Dr.textDraw optionsH' statsC textH'  -- lettering (pack (show (rowH world))) <> colored (blue) (solidCircle 1)-- <> personaje' <> colored (blue) (solidCircle 1)
+    0 -> {- startDraw -} lettering (pack (show (rowH world))) <> colored (red) (solidCircle 1) 
+    1 -> Dr.textDraw optionsH' statsC textH'  
         where   statsC = SP.statsCaracter (principalC world)
                 optionsH' = (optiosH world)
                 textH' = (textHistory world)!!(fromIntegral (rowH world)-1)
-    2 -> case inCombat' of
-          0 -> lettering (pack "DALE ENTER") <> colored (yellow) (solidCircle 1)
-          1 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
+    2 -> case (inCombat world) of
+          0 -> intoBDraw "Vas a entrar en batalla" "Pulsa ENTER para comenzar" (light blue)
+          1 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)
             where   (py, en) = (battle world)
-          2 -> lettering (pack "DALE ENTER") <> colored (blue) (solidCircle 1)
-      where (_, inCombat') = (inCombat world)
-    3 -> Dr.endDraw "Has Perdido" (dark (dark gray)) --{-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
-    4 -> Dr.endDraw "Has Ganado" (light (light blue))-- {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
-    5 -> Dr.resumeDraw --{-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME TEXTO") <> colored (yellow) (solidCircle 1)
-    6 -> Dr.resumeDraw --{-resumeDraw-}lettering (pack "HAS ENTRADO EN RESUME BATALLA") <> colored (yellow) (solidCircle 1)
+          2 -> intoBDraw "Has ganado la batalla" "Pulsa ENTER para continuar" (light green) 
+    3 -> Dr.endDraw "Has Perdido" (dark (dark gray)) 
+    4 -> Dr.endDraw "Has Ganado" (light (light blue))
+    5 -> Dr.resumeDraw 
+    6 -> Dr.resumeDraw
 
 
 -- COMBATE
@@ -167,8 +165,7 @@ drawWorld world =
 
 getCombate :: World -> Integer -> World
 getCombate world action = getCombateAux world py' en' rands'
-          where (inCombat',_) = (inCombat world)
-                ae = SP.accionAleatoria (head (tail (randoms world)))
+          where ae = SP.accionAleatoria (head (tail (randoms world)))
                 nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
                 rands' = tail $ tail (randoms world)
                 (py, en) = (battle world)
