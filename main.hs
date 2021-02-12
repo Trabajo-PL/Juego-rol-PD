@@ -68,18 +68,21 @@ evento (KeyPress k) world = case (actualT world) of
                 "Esc" -> world {actualT = 5} 
                 _   -> world
           2 ->case inCombat' of 
-                0 -> case k of
-                      "Enter" -> world {battle = (kal, nextEnemy), inCombat = (1,1)}
-                      _ -> world
-                      where nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
-                1 -> case k of
-                      "1" -> (getCombate world 1)
-                      "2" -> (getCombate world 2)
-                      "3" -> (getCombate world 3)
-                      "4" -> (getCombate world 4)
-                      "Esc" -> world {actualT = 6}
-                      _ -> world
-                _ -> world
+                  0 -> case k of
+                        "Enter" -> world {battle = (kal, nextEnemy), inCombat = (1,1)}
+                        _ -> world
+                        where nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
+                  1 -> case k of
+                        "1" -> (getCombate world 1)
+                        "2" -> (getCombate world 2)
+                        "3" -> (getCombate world 3)
+                        "4" -> (getCombate world 4)
+                        "Esc" -> world {actualT = 6}
+                        _ -> world
+                  2 -> case k of
+                        "Enter" -> world {actualT = 1, inCombat = (0,0)}
+                        _ -> world
+                  _ -> world
             where (_,inCombat') = (inCombat world)
           3 -> case k of
                 "Enter" -> iniWorld
@@ -88,6 +91,7 @@ evento (KeyPress k) world = case (actualT world) of
           4 -> case k of
                 "Enter" -> iniWorld
                 "R" ->  firstWorld
+                _ -> world
           5 -> case k of
                 "Esc" -> world {actualT = 1}
                 "Enter" -> iniWorld
@@ -150,6 +154,7 @@ drawWorld world =
           0 -> lettering (pack "DALE ENTER") <> colored (yellow) (solidCircle 1)
           1 -> combatDraw (SP.statsCaracter py) (SP.statsCaracter en)-- -} lettering (pack "Estamos en una PELEA") <> colored (green) (solidCircle 1)-- <> personaje' <> colored (green) (solidCircle 1) <> texto3 <> texto4
             where   (py, en) = (battle world)
+          2 -> lettering (pack "DALE ENTER") <> colored (blue) (solidCircle 1)
       where (_, inCombat') = (inCombat world)
     3 -> Dr.endDraw "Has Perdido" (dark (dark gray)) --{-goDraw -} lettering (pack  "HAS PERDIDO") <> colored (yellow) (solidCircle 1)
     4 -> Dr.endDraw "Has Ganado" (light (light blue))-- {-winDraw -} lettering (pack "HAS GANADO") <> colored (pink) (solidCircle 1)
@@ -161,10 +166,7 @@ drawWorld world =
 
 
 getCombate :: World -> Integer -> World
-getCombate world action =
-        case inCombat' of
-          0 -> world {battle = (kal, nextEnemy), inCombat = (1,0)}
-          1 -> getCombateAux world py' en' rands'
+getCombate world action = getCombateAux world py' en' rands'
           where (inCombat',_) = (inCombat world)
                 ae = SP.accionAleatoria (head (tail (randoms world)))
                 nextEnemy = selEnem (ceiling (fromIntegral ((rowH world) `div` 3))) pilaEnemys
@@ -172,10 +174,13 @@ getCombate world action =
                 (py, en) = (battle world)
                 (py',en') = SP.ejecutaAccion py action en ae (head (randoms world))
 
-
+{-
+        case inCombat' of
+          0 -> world {battle = (kal, nextEnemy), inCombat = (1,0)}
+          1 ->-}
 getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
 getCombateAux world player enemy rAct
-          | finComb == 1 = world {actualT = 1, battle  = ((principalC world), enemy), randoms = rAct, inCombat = (0,0)}
+          | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = (0,2)}
           | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = (1,1)}
           | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = (0,0)}
             where (finComb,_) = SP.finalCombate player enemy
