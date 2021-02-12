@@ -8,6 +8,7 @@ module SistemaPeleas
     accionAleatoria,
     modificaStat,
     statsCaracter,
+    selEnem
     Personaje(Pers)
 ) where
 
