@@ -64,16 +64,11 @@ aleatorio = do
 
 obtenerStat :: Integer -> Personaje -> Double
 obtenerStat stat personaje
-                        | stat == 1 = obtenerLuchar personaje 
-                        | stat == 2 = obtenerSanar personaje
-                        | stat == 3 = obtenerTnJ personaje
-                        | stat == 4 = obtenerFelicidad personaje
-                        | otherwise = obtenerVida personaje
-                        where obtenerFelicidad personaje = felicidad personaje
-                              obtenerSanar personaje = sanar personaje
-                              obtenerLuchar personaje = luchar personaje
-                              obtenerTnJ personaje = talkNoJutsu personaje
-                              obtenerVida personaje = vida personaje
+                        | stat == 1 = luchar personaje
+                        | stat == 2 = sanar personaje
+                        | stat == 3 = talkNoJutsu personaje
+                        | stat == 4 = felicidad personaje
+                        | otherwise = vida personaje
 
 -- Modificar un dato de un registro
 
@@ -168,9 +163,8 @@ statsCaracter principalC = (name, figth, heal, talk, happy, health)
                 
                
 selEnem :: Integer ->  Personaje
-selEnem n = enem n pilaEnemys
-        where   enem 1 pila = cima pila 
-                enem n pila = enem (n-1) (desapila pila)
+selEnem 1 = cima pila
+selEnem n = selEnem (n-1) (desapila pila)
                
                
 --------------------------------------------------------------------------------------------------------------
