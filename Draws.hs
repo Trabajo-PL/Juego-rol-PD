@@ -10,10 +10,6 @@ module Draws(
  ) where 
 {-# LANGUAGE OverloadedStrings #-}
 import CodeWorld
-import Text.CSV
-import Text.Printf
-import Data.Array
-import Data.List
 import Data.Text (pack)
 import Datos as D
 
