@@ -19,6 +19,13 @@ data World = World {rowH :: Integer, rowPA:: Integer, optiosH:: Datos.OpcionesH,
 
 type Matriz a = Array (Int,Int) Datos.Opciones
 
+-- DATOS
+historiaCSV:: IO [Datos.HistoriaCSV]
+historiaCSV  = readerHistory
+
+datosAumento:: IO (Matriz Datos.Opciones)
+datosAumento =lectorFicheroAumento
+
 -- EL MAIN
 
 main = do
@@ -96,13 +103,7 @@ evento (KeyPress k) world = case (actualT world) of
                   where (nextR, optiosH', _) = (dataH world)!!0
 evento _ world = world 
 
-historiaCSV:: IO [Datos.HistoriaCSV]
-historiaCSV  = readerHistory
-
-datosAumento:: IO (Matriz Datos.Opciones)
-datosAumento =lectorFicheroAumento
-
--- FICHEROS
+-- ACTUALIZACION DEL MUNDO
 
 updateWorld:: Integer -> Int  -> World -> World
 updateWorld actualR col world = world {rowH = nextR, rowPA = nextH, optiosH = optionsH', principalC = principalC', actualT = actualT'}
@@ -116,6 +117,22 @@ getTexto fila tipoA hCSV' = case tipoA of
               0 -> (0, ("ataque", "defensa", "insulto"),1)
               1 -> hCSV'!!(fromIntegral fila)--historiaCSV!!(fromIntegral fila)
               2 -> hCSV'!!(fromIntegral fila)
+
+-- COMBATE
+
+getCombate :: World -> Integer -> World
+getCombate world action = getCombateAux world py' en' rands'
+          where ae = SP.accionAleatoria (head (tail (randoms world)))
+                rands' = tail $ tail (randoms world)
+                (py, en) = (battle world)
+                (py',en') = SP.ejecutaAccion py action en ae (head (randoms world))
+
+getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
+getCombateAux world player enemy rAct
+          | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 2}
+          | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = 1}
+          | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
+            where (finComb,_) = SP.finalCombate player enemy
 
 -- DIBUJO
 
@@ -137,18 +154,4 @@ drawWorld world =
     5 -> Dr.resumeDraw 
     6 -> Dr.resumeDraw
 
--- COMBATE
 
-getCombate :: World -> Integer -> World
-getCombate world action = getCombateAux world py' en' rands'
-          where ae = SP.accionAleatoria (head (tail (randoms world)))
-                rands' = tail $ tail (randoms world)
-                (py, en) = (battle world)
-                (py',en') = SP.ejecutaAccion py action en ae (head (randoms world))
-
-getCombateAux :: World -> SP.Personaje -> SP.Personaje -> [Double] -> World
-getCombateAux world player enemy rAct
-          | finComb == 1 = world {actualT = 2, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 2}
-          | finComb == 2 = world {actualT = 2, battle  = (player, enemy), randoms = rAct, inCombat = 1}
-          | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
-            where (finComb,_) = SP.finalCombate player enemy
