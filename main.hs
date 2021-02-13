@@ -2,10 +2,9 @@
 import CodeWorld
 import Data.Text (pack)
 import System.IO
-import Data.Array
 import Data.Default
 import Data.List
--- Modulos nuestros:
+      -- Modulos nuestros:
 import Datos
 import SistemaPeleas as SP
 import Draws as Dr
@@ -17,13 +16,13 @@ data World = World {rowH :: Integer, rowPA:: Integer, optiosH:: Datos.OpcionesH,
                       dataH:: [Datos.HistoriaCSV], battle:: (SP.Personaje, SP.Personaje), randoms:: [Double], inCombat:: Integer, textHistory:: [String]}
 
 
-type Matriz a = Array (Int,Int) Datos.Opciones
+
 
 -- DATOS
 historiaCSV:: IO [Datos.HistoriaCSV]
 historiaCSV  = readerHistory
 
-datosAumento:: IO (Matriz Datos.Opciones)
+datosAumento:: IO (Datos.Matriz Datos.Opciones)
 datosAumento =lectorFicheroAumento
 
 -- EL MAIN
