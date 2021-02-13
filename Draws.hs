@@ -33,6 +33,7 @@ separate linea max = [(take (fromIntegral max) linea)] ++ (separate (drop (fromI
         -- le añado la separación ya que al usar las palabras quitamos los espacios y son necesarios, y además lo concatenamos para sacar las lineas
 addSpace:: [[String]] -> [String]
 addSpace xss = [concat [x++" " | x <- xs] | xs <- xss]
+
         -- esta función recursiva me genera el Picture de las lineas.
 drawText:: [String] -> Double -> Integer -> Picture
 drawText (x:xs) i max
