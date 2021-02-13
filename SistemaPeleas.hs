@@ -14,8 +14,6 @@ module SistemaPeleas
 
 -------------------------------------------------Imports-----------------------------------------------------
 import I1M.Pila
-import Data.Char
-import Text.Printf
 import System.IO
 import System.Random
 import Data.Default
