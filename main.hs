@@ -113,8 +113,8 @@ updateWorld actualR col world = world {rowH = nextR, rowPA = nextH, optiosH = op
         
 getTexto:: Integer -> Integer -> [Datos.HistoriaCSV] -> Datos.HistoriaCSV
 getTexto fila tipoA hCSV' = case tipoA of
-              0 -> (0, ("ataque", "defensa", "insulto"),1)
-              1 -> hCSV'!!(fromIntegral fila)--historiaCSV!!(fromIntegral fila)
+              0 -> (0, (" ", "defensa", " "),1)
+              1 -> hCSV'!!(fromIntegral fila)
               2 -> hCSV'!!(fromIntegral fila)
 
 -- COMBATE
