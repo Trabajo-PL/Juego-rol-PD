@@ -15,7 +15,6 @@ import Text.CSV
 import Text.Printf
 import Data.Array
 import Data.List
---import Data.Matrix
 import CodeWorld
 
 type Opciones = (Integer,Integer, Integer, Integer)
@@ -29,7 +28,7 @@ lectorFicheroAumento = do
     let filas = case contenido of
                 Right filas -> filas
                 _ -> []
-    let filas' = [[read elemento::Integer | elemento <- f] | f <- filas]
+    let filas' = map (\y -> map (\x -> read x::Integer) y) filas
     let matriz' = listaMatriz (csvLista filas')
     return (matriz')
 
@@ -101,5 +100,5 @@ readerText:: IO [String]
 readerText = do
     let entrada = "Files\\historiaPrincipal.txt"
     contenido <- readFile entrada
-    let lineas = [ l | l <- (lines contenido), length l > 1]
+    let lineas = filter (\x -> length x > 1) (lines contenido)
     return (lineas)
