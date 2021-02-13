@@ -6,7 +6,8 @@ module Datos
     readerText,
     HistoriaCSV,
     OpcionesH,
-    Opciones
+    Opciones,
+    Matriz
 ) where
 
 
