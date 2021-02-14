@@ -86,7 +86,9 @@ readerHistory = do
     let historyCSV = [(read texto:: Integer,(a,b,c), read siguienteF::Integer) | fil <- datos,let texto = fil!!0, let siguienteF = fil!!4, let a = fil!!1, let b = fil!!2, let c = fil!!3]
     return (historyCSV)
 
-
+----------------------------------------------------------------------------
+-- **** Fichero txt Historia **** --
+------ ---------- ----------- ------------ ---------
 readerText:: IO [String]
 readerText = do
     let entrada = "Files\\historiaPrincipal.txt"
