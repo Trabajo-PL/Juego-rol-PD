@@ -45,7 +45,7 @@ initialWorld = do
             en = kal
 
 kal:: SP.Personaje
-kal = SP.Pers "Kal" (-1) 1 2 1 10
+kal = SP.Pers "Kal" 1 1 2 1 10
 
   -- Evento
 evento:: Event -> World -> World
