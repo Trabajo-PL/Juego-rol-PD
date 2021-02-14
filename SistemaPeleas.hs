@@ -6,7 +6,7 @@ module SistemaPeleas
     finalCombate,
     aleatorio,
     accionAleatoria,
-    modificaStat,
+    setStat,
     statsCaracter,
     selEnem,
     Personaje(Pers)
@@ -62,8 +62,8 @@ aleatorio = do
         let fgen = randomRs (0, 1) g :: [Double]
         return fgen
 
-obtenerStat :: Integer -> Personaje -> Double
-obtenerStat stat personaje
+getStat :: Integer -> Personaje -> Double
+getStat stat personaje
                         | stat == 1 = luchar personaje
                         | stat == 2 = sanar personaje
                         | stat == 3 = talkNoJutsu personaje
@@ -72,25 +72,25 @@ obtenerStat stat personaje
 
 -- Modificar un dato de un registro
 
-modificarFelicidad,modificarSanar,modificarLuchar,modificarTnJ,modificarVida :: Double -> Personaje -> Personaje
+setFelicidad,setSanar,setLuchar,setTnJ,setVida :: Double -> Personaje -> Personaje
 
-modificarFelicidad act personaje = personaje { felicidad = max 0 (act + (felicidad personaje)) }
+setFelicidad act personaje = personaje { felicidad = max 0 (act + (felicidad personaje)) }
 
-modificarSanar act personaje = personaje { sanar = act + (sanar personaje) }
+setSanar act personaje = personaje { sanar = act + (sanar personaje) }
 
-modificarLuchar act personaje = personaje { luchar = act + (luchar personaje) }
+setLuchar act personaje = personaje { luchar = act + (luchar personaje) }
 
-modificarTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu personaje) }
+setTnJ act personaje = personaje { talkNoJutsu = act + (talkNoJutsu personaje) }
 
-modificarVida act personaje = personaje { vida = min 10 (act + (vida personaje)) }
+setVida act personaje = personaje { vida = min 10 (act + (vida personaje)) }
 
-modificaStat :: Integer -> Double -> Personaje -> Personaje
-modificaStat stat val personaje = case stat of
-                        1 -> modificarLuchar val personaje
-                        2 -> modificarSanar val personaje
-                        3 -> modificarTnJ val personaje
-                        4 -> modificarFelicidad val personaje
-                        5 -> modificarVida val personaje
+setStat :: Integer -> Double -> Personaje -> Personaje
+setStat stat val personaje = case stat of
+                        1 -> setLuchar val personaje
+                        2 -> setSanar val personaje
+                        3 -> setTnJ val personaje
+                        4 -> setFelicidad val personaje
+                        5 -> setVida val personaje
                         _ -> personaje
 
 --Ver si un combate ha finalizado y quién ha ganado si ha finalizado
@@ -100,21 +100,21 @@ finalCombate player enemy
                         | ve <= 0 = (1,"Has ganado el combate")
                         | vp <= 0 = (3, "Has perdido el combate")
                         | otherwise = (2, "")
-                                where vp = obtenerStat 5 player
-                                      ve = obtenerStat 5 enemy
+                                where vp = getStat 5 player
+                                      ve = getStat 5 enemy
 
 -- Esquiva, esta función calculará la probabilidad de esquivar del personaje en función a sus puntos 
 -- de Felicidad sobre el total
 
 esquiva :: Personaje -> Double -> Bool
-esquiva personaje rand = ((max 0 (obtenerStat 4 personaje))/ptsFel) > rand
+esquiva personaje rand = ((max 0 (getStat 4 personaje))/ptsFel) > rand
 
 -- Recibe ataque, esta función se encargará de devolver el personaje actualizado si ha recibido el ataque de otro
 
 recibeAtaque :: Personaje -> Personaje -> Double -> Personaje
 recibeAtaque p1 p2 rand
                 | esquiva p1 rand = p1
-                | otherwise = modificaStat 5 (-(obtenerStat 1 p2)) p1
+                | otherwise = setStat 5 (-(getStat 1 p2)) p1
 
 -- Acción aleatoria, esta función tendrá un resultado entre 1 y 4 que dado un número aleatorio determinará la 
 -- acción que llevará a cabo el enemigo
@@ -148,8 +148,9 @@ ejecutaAccion player ap enemy ae rand -- Acción player, Acción enemigo
                         | ap == 4 && ae == 2 = (cura player, enemy) -- Tú te curas y él se defiende
                         | ap == 4 && ae == 3 = (tnj enemy (cura player),enemy) -- Tú te curas y él te baja la moral
                         | ap == 4 && ae == 4 = (cura player,cura enemy) -- Los dos os curáis
-                                where cura p = modificaStat 5 (obtenerStat 2 p) p
-                                      tnj h o = modificaStat 4 (- obtenerStat 3 h) o
+                                where cura p = setStat 5 (getStat 2 p) p
+                                      tnj h o = setStat 4 (- getStat 3 h) o
+
 
 statsCaracter:: Personaje -> (String, Double, Double, Double, Double, Double)
 statsCaracter principalC = (name, figth, heal, talk, happy, health)
