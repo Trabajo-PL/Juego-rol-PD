@@ -107,7 +107,7 @@ finalCombate player enemy
 -- de Felicidad sobre el total
 
 esquiva :: Personaje -> Double -> Bool
-esquiva personaje rand = ((max 0 (getStat 4 personaje))/ptsFel) > rand
+esquiva personaje rand = ((getStat 4 personaje)/ptsFel) > rand
 
 -- Recibe ataque, esta función se encargará de devolver el personaje actualizado si ha recibido el ataque de otro
 
