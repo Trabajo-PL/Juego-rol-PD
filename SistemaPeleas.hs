@@ -163,8 +163,8 @@ statsCaracter principalC = (name, figth, heal, talk, happy, health)
                 
                
 selEnem :: Integer ->  Personaje
-selEnem 1 = cima pila
-selEnem n = selEnem (n-1) (desapila pila)
+selEnem 1 = cima pilaEnemys
+selEnem n = selEnem (n-1) (desapila pilaEnemys)
                
                
 --------------------------------------------------------------------------------------------------------------
