@@ -54,7 +54,7 @@ statsRectangle:: (String, Double, Double, Double, Double, Double) -> Picture
 statsRectangle principalC = translated (0) (-4) (lettering (pack ("Stats de "++nombre))) &  translated (0) (-6.5) (scaled (0.8) (0.8) texto') & colored (light (light ( light brown))) $ translated (0) (-6) $ solidRectangle (20) (6)
     where   texto' = (lettering (pack ("Luchar: "++(show lucha)++" Sanar: "++ (show sanar)++" Intimidar: "++(show intimidar)++" Felicidad: "++(show felicidad)++ "Vida: "++(show vida))))
             (nombre, lucha, sanar, intimidar, felicidad, vida) = principalC
-
+-- Función para generar un fondo del color deseado.
 drawBackground:: Color -> Picture
 drawBackground colr= colored (dark colr) $ solidRectangle (100) (100)
 
