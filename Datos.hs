@@ -19,6 +19,8 @@ import CodeWorld
 
 type Opciones = (Integer,Integer, Integer, Integer)
 type ValorYHabilidad = (Integer, Integer)
+type OpcionesH = (String, String, String)
+type HistoriaCSV = (Integer, OpcionesH, Integer)
 ---------------------------- Lectura del fichero CSV y pasar a Matriz ---------------------------
 
 lectorFicheroAumento:: IO (Matriz Opciones)
@@ -32,7 +34,7 @@ lectorFicheroAumento = do
     let matriz' = listaMatriz (csvLista filas')
     return (matriz')
 
-    -- Función para transformar el csv de [[String]] -> [[(Integer, Integer, Integer)]], y esto pasarlo a matriz.
+    -- Función para transformar el csv de [[String]] -> [[(Integer, Integer, Integer, Integer)]], y esto pasarlo a matriz.
         -- Tenemos codificado tanto la línea siguiente de la historia, como el valor a aumentar tras la decisión y la habilidad a aumentar
         -- en un único número, tendremos codificada toda la información y con estas funciones lo decodificaremos. 
 csvLista:: [[Integer]] -> [[Opciones]]
@@ -46,10 +48,7 @@ siguienteTipo el
 
 filaHistoria:: Integer -> Integer
 filaHistoria el = div aux 100
-    -- | el < 0 = div (-1*aux) 100
-    -- | el >= 0 = div aux 100
     where   aux     = if el < 0 then mod (-1*el) 1000 else mod el 1000
-    -- | otherwise = error "Por ahora error, esto significa que vamos pegaaaaarnos"
 
 valorYHabilidad:: Integer -> ValorYHabilidad
 valorYHabilidad el 
@@ -58,12 +57,7 @@ valorYHabilidad el
     where   aux     = if el < 0 then mod (-1*el) 100 else mod el 100
             (b,c)   = if aux < 0 then divMod (-1*aux) 10 else divMod aux 10
 
-    -- Array y Matriz; funciones reutilizadas de las prácticas. 
-type VectorA a = Array Int Opciones
-
-listaVector :: [Opciones] -> VectorA Opciones
-listaVector xs = array (1,n) (zip [1..n] xs)
-    where   n = length xs
+    -- Matriz; funciones reutilizadas de las prácticas. 
 
 type Matriz a = Array (Int,Int) Opciones
 
@@ -79,9 +73,6 @@ seleccionaElemento f c m = m ! (f,c)
 ----------------------------------------------------------------------------
 -- **** Fichero csv Historia **** --
 ------ ---------- ----------- ------------ ---------
-type Enemigos = [String]
-type OpcionesH = (String, String, String)
-type HistoriaCSV = (Integer, OpcionesH, Integer)
 
 readerHistory:: IO [HistoriaCSV]
 readerHistory = do
