@@ -42,7 +42,7 @@ guerrero :: Personaje
 guerrero = Pers "Guerrero Juan" 1 1 2 2 4.0 
 
 ultimoEn :: Personaje
-ultimoEn = Pers "Final Boss" 2 1 2 3 6.0
+ultimoEn = Pers "Final Boss" 3 2 1 4 8.0
 
 pilaEnemys :: Pila Personaje
 pilaEnemys = foldr apila vacia [ninoPueblo,guerrero,ultimoEn]
