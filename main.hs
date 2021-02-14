@@ -18,14 +18,14 @@ data World = World {rowH :: Integer, rowPA:: Integer, optiosH:: Datos.OpcionesH,
 
 
 
--- DATOS
+-- DATOS aquí guardamos la función que llamará al lector de los datos en Datos.hs
 historiaCSV:: IO [Datos.HistoriaCSV]
 historiaCSV  = readerHistory
 
 datosAumento:: IO (Datos.Matriz Datos.Opciones)
 datosAumento =lectorFicheroAumento
 
--- EL MAIN
+-- MAIN que ejecutará todo el programa haciendo uso de la función activityOf
 
 main = do
   initialWorld' <- initialWorld
@@ -45,9 +45,11 @@ initialWorld = do
             en = kal
 
 kal:: SP.Personaje
-kal = SP.Pers "Kal" 1 1 2 1 10
+kal = SP.Pers "Kal" 1 1 2 1 6
 
-  -- Evento
+  -- Evento, esta es la parte más importante, aquí actualizamos todo el "mundo", provocando el avance de la historia.
+  -- Para ver cada caso usamos una variable llamada actualT, contenida en world, para ver cual es la acción actual 
+  -- donde nos encontramos y dependiendo de que opción se elija que ocurrirá luego.
 evento:: Event -> World -> World
 evento (KeyPress k) world = case (actualT world) of
           0 -> case k of
@@ -62,9 +64,10 @@ evento (KeyPress k) world = case (actualT world) of
                 _   -> world
           2 ->case (inCombat world) of 
                   0 -> case k of
-                        "Enter" -> world {battle = (kal, nextEnemy), inCombat = 1}
+                        "Enter" -> world {battle = (principalC', nextEnemy), inCombat = 1}
                         _ -> world
                         where nextEnemy = SP.selEnem (ceiling (fromIntegral ((rowH world) `div` 3)))
+                              principalC' = (principalC world)
                   1 -> case k of
                         "1" -> (getCombate world 1)
                         "2" -> (getCombate world 2)
@@ -105,12 +108,13 @@ evento _ world = world
 -- ACTUALIZACION DEL MUNDO
 
 updateWorld:: Integer -> Int  -> World -> World
-updateWorld actualR col world = world {rowH = nextR, rowPA = nextH, optiosH = optionsH', principalC = principalC', actualT = actualT'}
+updateWorld actualR col world = world {rowH = nextR, rowPA = nextH, optiosH = optionsH', principalC = principalC', battle = (principalC', en), actualT = actualT'}
   where   (actualT', nextH, value, hability) = seleccionaElemento (fromIntegral actualR) col (powerUps world)
           (nextR,optionsH',_) = getTexto (nextH - 1) actualT' (dataH world)
+          (_, en) = (battle world)
           principalC' = SP.setStat (fromIntegral hability) (fromIntegral value) (principalC world)
 
-        
+      -- Función usada para sacar el texto de la historia, y actualizar así el mundo con él.
 getTexto:: Integer -> Integer -> [Datos.HistoriaCSV] -> Datos.HistoriaCSV
 getTexto fila tipoA hCSV' = case tipoA of
               0 -> (0, (" ", "defensa", " "),1)
@@ -133,7 +137,8 @@ getCombateAux world player enemy rAct
           | finComb == 3 = world {actualT = 3, battle  = ((principalC world), enemy), randoms = rAct, inCombat = 0}
             where (finComb,_) = SP.finalCombate player enemy
 
--- DIBUJO
+-- DIBUJO al tener diferentes situaciones, cada una tendrá su propio escenario, por lo tanto con cada tipo habrá una 
+-- actualización diferente. 
 
 drawWorld:: World -> Picture
 drawWorld world = 
