@@ -108,7 +108,7 @@ updateWorld:: Integer -> Int  -> World -> World
 updateWorld actualR col world = world {rowH = nextR, rowPA = nextH, optiosH = optionsH', principalC = principalC', actualT = actualT'}
   where   (actualT', nextH, value, hability) = seleccionaElemento (fromIntegral actualR) col (powerUps world)
           (nextR,optionsH',_) = getTexto (nextH - 1) actualT' (dataH world)
-          principalC' = SP.modificaStat (fromIntegral hability) (fromIntegral value) (principalC world)
+          principalC' = SP.setStat (fromIntegral hability) (fromIntegral value) (principalC world)
 
         
 getTexto:: Integer -> Integer -> [Datos.HistoriaCSV] -> Datos.HistoriaCSV
