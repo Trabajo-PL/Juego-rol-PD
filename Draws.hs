@@ -26,7 +26,7 @@ text2Line:: String -> Integer -> (Double, Double) -> (Double, Double) -> Picture
 text2Line linea max (coord1,coord2) (scalX, scalY)= (translated (coord1) (coord2) (scaled (scalX) (scalY) (drawText añadirLinea (0) max)))
     where   lineasSeparadas = separate (words linea) max
             añadirLinea = addSpace lineasSeparadas
-        -- Separo la linea principal en sublineas de 25 palabras
+        -- Separo la linea principal en sublineas de n palabras
 separate:: [String] -> Integer -> [[String]]
 separate [] _ = [[]]
 separate linea max = [(take (fromIntegral max) linea)] ++ (separate (drop (fromIntegral max) linea) max)
